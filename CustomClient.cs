@@ -7,8 +7,35 @@ using System.Text;
 
 namespace UdpCLientFinalForm
 {
-    class CustomClient
+    class CustomClient : UdpClient, IDisposable
     {
+        #region properties
+        public string ClientName { get; set; }
+        public string ClientHost { get; set; }
+        public string ClientIP { get; set; }
+        public bool Registered { get; set; }
+        public List<string> ClientSubjects { get; set; }
+        public int ClientPort { get; set; }
+        public UdpClient UdpClient { get; set; }
+
+
+
+        #endregion
+
+
+        public CustomClient(string _clientName, string _clientHost, string _ip, int _port, List<string> _subject, bool _registered)
+        {
+            ClientName = _clientName;
+            ClientHost = _clientHost;
+            ClientIP = _ip;
+            ClientPort = _port;
+            ClientSubjects = _subject;
+            Registered = _registered;
+            IPEndPoint ip = new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort);
+            UdpClient = new UdpClient(ip);
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
+        }
         /// <summary>
         /// Initialize the custom client, which includes a name and sets the receive and send timeouts
         /// </summary>
@@ -17,66 +44,68 @@ namespace UdpCLientFinalForm
         /// <param name="port"></param>
         public CustomClient(string name, string host, int port)
         {
-            clientName = name;
-            clientHost = host;
-            clientPort = port;
-            ipAdress = clientHost + "." + clientHost.ToString();
+            ClientName = name;
+            ClientHost = host;
+            ClientPort = port;
+            ClientIP = ClientHost + "." + ClientPort.ToString();
             IPEndPoint ip = new IPEndPoint(IPAddress.Parse(host), port);
-            udpClient = new UdpClient(ip);
-            udpClient.Client.ReceiveTimeout = 3000;
-            udpClient.Client.SendTimeout = 3000;
+            UdpClient = new UdpClient(ip);
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
 
         }
         /// <summary>
-        /// Replace the current subjects with a new one
+        /// Restart the client connection
         /// </summary>
-        /// <param name="newSubs"></param>
-        public void resetSubjects(List<string> newSubs)
+        public void RestartClient()
         {
-            clientSubjects = newSubs;
+            UdpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
         }
 
         /// <summary>
-        /// Add a new subject to the current list
+        /// Change the IP on the users request (I think that's how it works?)
+        /// </summary>
+        /// <param name="newHost"></param>
+        /// <param name="newPort"></param>
+        public void ChangeIP(string newHost, int newPort)
+        {
+            ClientHost = newHost;
+            ClientPort = newPort;
+            ClientIP = newHost + "." + newPort.ToString();
+        }
+
+
+        /// <summary>
+        /// Add a single subject to the subject list
         /// </summary>
         /// <param name="sbject"></param>
-        public void addSubjects(string sbject)
+        public void AddSubject(string sbject)
         {
-            if(!clientSubjects.Contains(sbject)){
-                clientSubjects.Add(sbject);
+            if (!ClientSubjects.Contains(sbject))
+            {
+                ClientSubjects.Add(sbject);
             }
         }
 
         /// <summary>
-        /// Change the IP address of the client to a new one
+        /// Add an entire list of subjects the user may be interested in
         /// </summary>
-        /// <param name="newHost"></param>
-        /// <param name="newPort"></param>
-        public void changeIP(string newHost, int newPort)
+        /// <param name="subjects"></param>
+        public void AddSubjectList(List<string> subjects)
         {
-            clientHost = newHost;
-            clientPort = newPort;
-            ipAdress = newHost + "." + newPort.ToString();
+            foreach (var subject in subjects)
+            {
+                AddSubject(subject);
+            }
         }
 
-        /// <summary>
-        /// Reconnects a client to its IP address. Called only after closing a socket
-        /// </summary>
-        /// <param name="oldIp"></param>
-        public void restartClient()
+        //May be needed if registered gets set to false to remove all the information of the object
+        protected virtual void Dispose(bool disposing)
         {
-            udpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(clientHost), clientPort));
-            udpClient.Client.ReceiveTimeout = 3000;
-            udpClient.Client.SendTimeout = 3000;
+
         }
-
-        public string clientName;
-        public string clientHost;
-        public int clientPort;
-
-        private string ipAdress;
-        private List<string> clientSubjects;
-        public UdpClient udpClient;
 
     }
 }

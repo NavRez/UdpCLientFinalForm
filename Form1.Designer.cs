@@ -41,6 +41,7 @@ namespace UdpCLientFinalForm
             this.hostTextBox = new System.Windows.Forms.TextBox();
             this.labelName = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.registerGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -154,11 +155,20 @@ namespace UdpCLientFinalForm
             this.nameTextBox.Text = "Test";
             this.nameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(380, 28);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(365, 227);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.registerGroup);
             this.Name = "Form1";
             this.Text = "UdpClientManager";
@@ -185,6 +195,7 @@ namespace UdpCLientFinalForm
 
         private List<CustomClient> clients = new List<CustomClient>();
         private byte[] bus = new byte[1024];
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
