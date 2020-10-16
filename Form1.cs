@@ -16,6 +16,7 @@ namespace UdpCLientFinalForm
         public Form1()
         {
             InitializeComponent();
+            GreyOutClientOperations();
         }
 
         private void defaultButton_Click(object sender, EventArgs e)
@@ -28,20 +29,75 @@ namespace UdpCLientFinalForm
 
         private void createButton_Click(object sender, EventArgs e)
         {
-            CustomClient customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
-            clients.Add(customClient);
-            IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
+            try
+            {
+                CustomClient customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
+                clients.Add(customClient);
+                IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
 
-            bus = Encoding.ASCII.GetBytes("client "+ customClient.clientName + " Requesting connection ...");
-            customClient.udpClient.Send(bus, bus.Length, serverIpTest);
-            bus = customClient.udpClient.Receive(ref serverIpTest);
+                bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
+                customClient.UdpClient.Send(bus, bus.Length, serverIpTest);
+                bus = customClient.UdpClient.Receive(ref serverIpTest);
 
-            bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-            string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+                bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
-            registeredUsersBox.Text+= myString + Environment.NewLine;
-            customClient.udpClient.Close();
+                registeredUsersBox.Text += myString + Environment.NewLine;
+                Console.WriteLine("Exiting connection...");
+                customClient.UdpClient.Close();
 
+            }
+            catch(Exception excep)
+            {
+                richTextBox1.Text += excep.Message + Environment.NewLine;
+            }
+
+
+        }
+
+        private void updateButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateButton.Checked)
+            {
+                messageLabel.Enabled = false;
+                richMessageBox.Enabled = false;
+                subjectLabel.Enabled = false;
+                subjectBox.Enabled = false;
+
+                newHostClient.Enabled = true;
+                hostClientBox.Enabled = true;
+                newPortClient.Enabled = true;
+                portClientBox.Enabled = true;
+            }
+        }
+
+        private void publishButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (publishButton.Checked)
+            {
+                messageLabel.Enabled = true;
+                richMessageBox.Enabled = true;
+                subjectLabel.Enabled = true;
+                subjectBox.Enabled = true;
+
+                newHostClient.Enabled = false;
+                hostClientBox.Enabled = false;
+                newPortClient.Enabled = false;
+                portClientBox.Enabled = false;
+            }
+        }
+
+        public void GreyOutClientOperations()
+        {
+            messageLabel.Enabled = false;
+            richMessageBox.Enabled = false;
+            subjectLabel.Enabled = false;
+            subjectBox.Enabled = false;
+
+            newHostClient.Enabled = false;
+            hostClientBox.Enabled = false;
+            newPortClient.Enabled = false;
+            portClientBox.Enabled = false;
         }
     }
 }
