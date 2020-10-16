@@ -16,6 +16,7 @@ namespace UdpCLientFinalForm
         public Form1()
         {
             InitializeComponent();
+            GreyOutClientOperations();
         }
 
         private void defaultButton_Click(object sender, EventArgs e)
@@ -34,7 +35,7 @@ namespace UdpCLientFinalForm
                 clients.Add(customClient);
                 IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
 
-                bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " Requesting connection ...");
+                bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
                 customClient.UdpClient.Send(bus, bus.Length, serverIpTest);
                 bus = customClient.UdpClient.Receive(ref serverIpTest);
 
@@ -52,6 +53,51 @@ namespace UdpCLientFinalForm
             }
 
 
+        }
+
+        private void updateButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (updateButton.Checked)
+            {
+                messageLabel.Enabled = false;
+                richMessageBox.Enabled = false;
+                subjectLabel.Enabled = false;
+                subjectBox.Enabled = false;
+
+                newHostClient.Enabled = true;
+                hostClientBox.Enabled = true;
+                newPortClient.Enabled = true;
+                portClientBox.Enabled = true;
+            }
+        }
+
+        private void publishButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (publishButton.Checked)
+            {
+                messageLabel.Enabled = true;
+                richMessageBox.Enabled = true;
+                subjectLabel.Enabled = true;
+                subjectBox.Enabled = true;
+
+                newHostClient.Enabled = false;
+                hostClientBox.Enabled = false;
+                newPortClient.Enabled = false;
+                portClientBox.Enabled = false;
+            }
+        }
+
+        public void GreyOutClientOperations()
+        {
+            messageLabel.Enabled = false;
+            richMessageBox.Enabled = false;
+            subjectLabel.Enabled = false;
+            subjectBox.Enabled = false;
+
+            newHostClient.Enabled = false;
+            hostClientBox.Enabled = false;
+            newPortClient.Enabled = false;
+            portClientBox.Enabled = false;
         }
     }
 }
