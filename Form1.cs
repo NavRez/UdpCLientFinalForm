@@ -36,7 +36,8 @@ namespace UdpCLientFinalForm
                 IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
 
                 bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
-                customClient.UdpClient.Send(bus, bus.Length, serverIpTest);
+                customClient.UdpClient.Connect(serverIpTest);
+                customClient.UdpClient.Send(bus, bus.Length);
                 bus = customClient.UdpClient.Receive(ref serverIpTest);
 
                 bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
@@ -98,6 +99,19 @@ namespace UdpCLientFinalForm
             hostClientBox.Enabled = false;
             newPortClient.Enabled = false;
             portClientBox.Enabled = false;
+        }
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            if (updateButton.Checked)
+            {
+                ; 
+            }
+            else if (publishButton.Checked)
+            {
+                ;
+            }
+
         }
     }
 }
