@@ -195,12 +195,6 @@ namespace UdpCLientFinalForm
         }
 
         //Another method I found
-        public void ReceiveCallBack(IAsyncResult ar)
-        {
-            IPEndPoint e = (
-        }
-
-        This is an alternative function
         private static void UDPListener(CustomClient client)
         {
             Task.Run(async () =>
