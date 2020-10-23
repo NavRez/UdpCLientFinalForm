@@ -7,7 +7,7 @@ using System.Text;
 
 namespace UdpCLientFinalForm
 {
-    class CustomClient : UdpClient, IDisposable
+    public class CustomClient : UdpClient, IDisposable
     {
         #region properties
         public string ClientName { get; set; }
@@ -102,7 +102,7 @@ namespace UdpCLientFinalForm
         }
 
         //May be needed if registered gets set to false to remove all the information of the object
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
 
         }
