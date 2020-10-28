@@ -31,6 +31,7 @@ namespace UdpCLientFinalForm
         private void InitializeComponent()
         {
             this.registerGroup = new System.Windows.Forms.GroupBox();
+            this.removeButton = new System.Windows.Forms.Button();
             this.labelRegisterResults = new System.Windows.Forms.Label();
             this.registeredUsersBox = new System.Windows.Forms.RichTextBox();
             this.defaultButton = new System.Windows.Forms.Button();
@@ -57,19 +58,19 @@ namespace UdpCLientFinalForm
             this.hostClientBox = new System.Windows.Forms.TextBox();
             this.nameClientBox = new System.Windows.Forms.TextBox();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
-            this.cmpEngCheck = new System.Windows.Forms.CheckBox();
-            this.disneMarvelCheck = new System.Windows.Forms.CheckBox();
-            this.pokemonCheck = new System.Windows.Forms.CheckBox();
-            this.finalFantasyCheck = new System.Windows.Forms.CheckBox();
-            this.zackFairCheck = new System.Windows.Forms.CheckBox();
-            this.marioCheck = new System.Windows.Forms.CheckBox();
-            this.mexicanCheck = new System.Windows.Forms.CheckBox();
-            this.protocolsCheck = new System.Windows.Forms.CheckBox();
-            this.calculusCheck = new System.Windows.Forms.CheckBox();
-            this.usCheck = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.subjectTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.subjectTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.usCheck = new System.Windows.Forms.CheckBox();
+            this.calculusCheck = new System.Windows.Forms.CheckBox();
+            this.protocolsCheck = new System.Windows.Forms.CheckBox();
+            this.mexicanCheck = new System.Windows.Forms.CheckBox();
+            this.marioCheck = new System.Windows.Forms.CheckBox();
+            this.zackFairCheck = new System.Windows.Forms.CheckBox();
+            this.finalFantasyCheck = new System.Windows.Forms.CheckBox();
+            this.pokemonCheck = new System.Windows.Forms.CheckBox();
+            this.disneMarvelCheck = new System.Windows.Forms.CheckBox();
+            this.cmpEngCheck = new System.Windows.Forms.CheckBox();
             this.registerGroup.SuspendLayout();
             this.clientOperationBox.SuspendLayout();
             this.subjectGroupBox.SuspendLayout();
@@ -77,6 +78,7 @@ namespace UdpCLientFinalForm
             // 
             // registerGroup
             // 
+            this.registerGroup.Controls.Add(this.removeButton);
             this.registerGroup.Controls.Add(this.labelRegisterResults);
             this.registerGroup.Controls.Add(this.registeredUsersBox);
             this.registerGroup.Controls.Add(this.defaultButton);
@@ -93,6 +95,16 @@ namespace UdpCLientFinalForm
             this.registerGroup.TabIndex = 0;
             this.registerGroup.TabStop = false;
             this.registerGroup.Text = "Register Clients";
+            // 
+            // removeButton
+            // 
+            this.removeButton.Location = new System.Drawing.Point(279, 144);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(94, 29);
+            this.removeButton.TabIndex = 10;
+            this.removeButton.Text = "Remove";
+            this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
             // 
             // labelRegisterResults
             // 
@@ -352,95 +364,31 @@ namespace UdpCLientFinalForm
             this.subjectGroupBox.TabStop = false;
             this.subjectGroupBox.Text = "Subjects";
             // 
-            // cmpEngCheck
+            // button1
             // 
-            this.cmpEngCheck.AutoSize = true;
-            this.cmpEngCheck.Location = new System.Drawing.Point(7, 20);
-            this.cmpEngCheck.Name = "cmpEngCheck";
-            this.cmpEngCheck.Size = new System.Drawing.Size(178, 24);
-            this.cmpEngCheck.TabIndex = 0;
-            this.cmpEngCheck.Text = "computer engineering";
-            this.cmpEngCheck.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(201, 192);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(94, 29);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Submit";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.submitButton_Click);
             // 
-            // disneMarvelCheck
+            // subjectTextBox
             // 
-            this.disneMarvelCheck.AutoSize = true;
-            this.disneMarvelCheck.Location = new System.Drawing.Point(7, 50);
-            this.disneMarvelCheck.Name = "disneMarvelCheck";
-            this.disneMarvelCheck.Size = new System.Drawing.Size(124, 24);
-            this.disneMarvelCheck.TabIndex = 4;
-            this.disneMarvelCheck.Text = "Disney Marvel";
-            this.disneMarvelCheck.UseVisualStyleBackColor = true;
+            this.subjectTextBox.Location = new System.Drawing.Point(15, 194);
+            this.subjectTextBox.Name = "subjectTextBox";
+            this.subjectTextBox.Size = new System.Drawing.Size(84, 27);
+            this.subjectTextBox.TabIndex = 0;
             // 
-            // pokemonCheck
+            // label1
             // 
-            this.pokemonCheck.AutoSize = true;
-            this.pokemonCheck.Location = new System.Drawing.Point(201, 50);
-            this.pokemonCheck.Name = "pokemonCheck";
-            this.pokemonCheck.Size = new System.Drawing.Size(92, 24);
-            this.pokemonCheck.TabIndex = 4;
-            this.pokemonCheck.Text = "Pokemon";
-            this.pokemonCheck.UseVisualStyleBackColor = true;
-            // 
-            // finalFantasyCheck
-            // 
-            this.finalFantasyCheck.AutoSize = true;
-            this.finalFantasyCheck.Location = new System.Drawing.Point(7, 110);
-            this.finalFantasyCheck.Name = "finalFantasyCheck";
-            this.finalFantasyCheck.Size = new System.Drawing.Size(114, 24);
-            this.finalFantasyCheck.TabIndex = 4;
-            this.finalFantasyCheck.Text = "Final Fantasy";
-            this.finalFantasyCheck.UseVisualStyleBackColor = true;
-            // 
-            // zackFairCheck
-            // 
-            this.zackFairCheck.AutoSize = true;
-            this.zackFairCheck.Location = new System.Drawing.Point(7, 140);
-            this.zackFairCheck.Name = "zackFairCheck";
-            this.zackFairCheck.Size = new System.Drawing.Size(89, 24);
-            this.zackFairCheck.TabIndex = 4;
-            this.zackFairCheck.Text = "Zack Fair";
-            this.zackFairCheck.UseVisualStyleBackColor = true;
-            // 
-            // marioCheck
-            // 
-            this.marioCheck.AutoSize = true;
-            this.marioCheck.Location = new System.Drawing.Point(201, 20);
-            this.marioCheck.Name = "marioCheck";
-            this.marioCheck.Size = new System.Drawing.Size(70, 24);
-            this.marioCheck.TabIndex = 0;
-            this.marioCheck.Text = "Mario";
-            this.marioCheck.UseVisualStyleBackColor = true;
-            // 
-            // mexicanCheck
-            // 
-            this.mexicanCheck.AutoSize = true;
-            this.mexicanCheck.Location = new System.Drawing.Point(6, 80);
-            this.mexicanCheck.Name = "mexicanCheck";
-            this.mexicanCheck.Size = new System.Drawing.Size(138, 24);
-            this.mexicanCheck.TabIndex = 4;
-            this.mexicanCheck.Text = "Mexican Studies";
-            this.mexicanCheck.UseVisualStyleBackColor = true;
-            // 
-            // protocolsCheck
-            // 
-            this.protocolsCheck.AutoSize = true;
-            this.protocolsCheck.Location = new System.Drawing.Point(201, 80);
-            this.protocolsCheck.Name = "protocolsCheck";
-            this.protocolsCheck.Size = new System.Drawing.Size(93, 24);
-            this.protocolsCheck.TabIndex = 4;
-            this.protocolsCheck.Text = "Protocols";
-            this.protocolsCheck.UseVisualStyleBackColor = true;
-            // 
-            // calculusCheck
-            // 
-            this.calculusCheck.AutoSize = true;
-            this.calculusCheck.Location = new System.Drawing.Point(201, 110);
-            this.calculusCheck.Name = "calculusCheck";
-            this.calculusCheck.Size = new System.Drawing.Size(85, 24);
-            this.calculusCheck.TabIndex = 4;
-            this.calculusCheck.Text = "Calculus";
-            this.calculusCheck.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 171);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 20);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Name";
             // 
             // usCheck
             // 
@@ -452,31 +400,95 @@ namespace UdpCLientFinalForm
             this.usCheck.Text = "US Politics";
             this.usCheck.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // calculusCheck
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 171);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 20);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Name";
+            this.calculusCheck.AutoSize = true;
+            this.calculusCheck.Location = new System.Drawing.Point(201, 110);
+            this.calculusCheck.Name = "calculusCheck";
+            this.calculusCheck.Size = new System.Drawing.Size(85, 24);
+            this.calculusCheck.TabIndex = 4;
+            this.calculusCheck.Text = "Calculus";
+            this.calculusCheck.UseVisualStyleBackColor = true;
             // 
-            // subjectTextBox
+            // protocolsCheck
             // 
-            this.subjectTextBox.Location = new System.Drawing.Point(15, 194);
-            this.subjectTextBox.Name = "subjectTextBox";
-            this.subjectTextBox.Size = new System.Drawing.Size(84, 27);
-            this.subjectTextBox.TabIndex = 0;
+            this.protocolsCheck.AutoSize = true;
+            this.protocolsCheck.Location = new System.Drawing.Point(201, 80);
+            this.protocolsCheck.Name = "protocolsCheck";
+            this.protocolsCheck.Size = new System.Drawing.Size(93, 24);
+            this.protocolsCheck.TabIndex = 4;
+            this.protocolsCheck.Text = "Protocols";
+            this.protocolsCheck.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // mexicanCheck
             // 
-            this.button1.Location = new System.Drawing.Point(201, 192);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 29);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Submit";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.submitButton_Click);
+            this.mexicanCheck.AutoSize = true;
+            this.mexicanCheck.Location = new System.Drawing.Point(6, 80);
+            this.mexicanCheck.Name = "mexicanCheck";
+            this.mexicanCheck.Size = new System.Drawing.Size(138, 24);
+            this.mexicanCheck.TabIndex = 4;
+            this.mexicanCheck.Text = "Mexican Studies";
+            this.mexicanCheck.UseVisualStyleBackColor = true;
+            // 
+            // marioCheck
+            // 
+            this.marioCheck.AutoSize = true;
+            this.marioCheck.Location = new System.Drawing.Point(201, 20);
+            this.marioCheck.Name = "marioCheck";
+            this.marioCheck.Size = new System.Drawing.Size(70, 24);
+            this.marioCheck.TabIndex = 0;
+            this.marioCheck.Text = "Mario";
+            this.marioCheck.UseVisualStyleBackColor = true;
+            // 
+            // zackFairCheck
+            // 
+            this.zackFairCheck.AutoSize = true;
+            this.zackFairCheck.Location = new System.Drawing.Point(7, 140);
+            this.zackFairCheck.Name = "zackFairCheck";
+            this.zackFairCheck.Size = new System.Drawing.Size(89, 24);
+            this.zackFairCheck.TabIndex = 4;
+            this.zackFairCheck.Text = "Zack Fair";
+            this.zackFairCheck.UseVisualStyleBackColor = true;
+            // 
+            // finalFantasyCheck
+            // 
+            this.finalFantasyCheck.AutoSize = true;
+            this.finalFantasyCheck.Location = new System.Drawing.Point(7, 110);
+            this.finalFantasyCheck.Name = "finalFantasyCheck";
+            this.finalFantasyCheck.Size = new System.Drawing.Size(114, 24);
+            this.finalFantasyCheck.TabIndex = 4;
+            this.finalFantasyCheck.Text = "Final Fantasy";
+            this.finalFantasyCheck.UseVisualStyleBackColor = true;
+            // 
+            // pokemonCheck
+            // 
+            this.pokemonCheck.AutoSize = true;
+            this.pokemonCheck.Location = new System.Drawing.Point(201, 50);
+            this.pokemonCheck.Name = "pokemonCheck";
+            this.pokemonCheck.Size = new System.Drawing.Size(92, 24);
+            this.pokemonCheck.TabIndex = 4;
+            this.pokemonCheck.Text = "Pokemon";
+            this.pokemonCheck.UseVisualStyleBackColor = true;
+            // 
+            // disneMarvelCheck
+            // 
+            this.disneMarvelCheck.AutoSize = true;
+            this.disneMarvelCheck.Location = new System.Drawing.Point(7, 50);
+            this.disneMarvelCheck.Name = "disneMarvelCheck";
+            this.disneMarvelCheck.Size = new System.Drawing.Size(124, 24);
+            this.disneMarvelCheck.TabIndex = 4;
+            this.disneMarvelCheck.Text = "Disney Marvel";
+            this.disneMarvelCheck.UseVisualStyleBackColor = true;
+            // 
+            // cmpEngCheck
+            // 
+            this.cmpEngCheck.AutoSize = true;
+            this.cmpEngCheck.Location = new System.Drawing.Point(7, 20);
+            this.cmpEngCheck.Name = "cmpEngCheck";
+            this.cmpEngCheck.Size = new System.Drawing.Size(178, 24);
+            this.cmpEngCheck.TabIndex = 0;
+            this.cmpEngCheck.Text = "computer engineering";
+            this.cmpEngCheck.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -545,6 +557,7 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.CheckBox pokemonCheck;
         private System.Windows.Forms.CheckBox disneMarvelCheck;
         private System.Windows.Forms.CheckBox cmpEngCheck;
+        private System.Windows.Forms.Button removeButton;
     }
 }
 
