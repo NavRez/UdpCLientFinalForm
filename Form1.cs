@@ -29,6 +29,9 @@ namespace UdpCLientFinalForm
 
         private void createButton_Click(object sender, EventArgs e)
         {
+            var newPort = Int32.Parse(portTextBox.Text) + 1;
+            portTextBox.Text = newPort.ToString();
+
             try
             {
                 IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
@@ -52,6 +55,10 @@ namespace UdpCLientFinalForm
                 string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
                 registeredUsersBox.Text += myString + Environment.NewLine;
+
+                hostTextBox.Enabled = false;
+                nameTextBox.Enabled = false;
+                portTextBox.Enabled = false;
 
                 createButton.Enabled = false;
                 removeButton.Enabled = true;
@@ -180,6 +187,10 @@ namespace UdpCLientFinalForm
                     richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
                     clients.Last().CloseConnection(serverIpTest);
                     clients.Clear();
+                    hostTextBox.Enabled = true;
+                    nameTextBox.Enabled = true;
+                    portTextBox.Enabled = true;
+
                     createButton.Enabled = true;
                     removeButton.Enabled = false;
                     subjectGroupBox.Enabled = false;
@@ -195,6 +206,89 @@ namespace UdpCLientFinalForm
             {
                 richTextBox1.Text += excep.Message + Environment.NewLine;
             }
+        }
+
+        private void submitSubjectsButton_Click(object sender, EventArgs e)
+        {
+            string subjectList = "";
+
+            if (marioCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", marioCheck.Text);
+            }
+
+            if (cmpEngCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", cmpEngCheck.Text);
+            }
+
+            if (disneMarvelCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", disneMarvelCheck.Text);
+            }
+            
+            if (pokemonCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", pokemonCheck.Text);
+            }
+
+            if (mexicanCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", mexicanCheck.Text);
+            }
+
+            if (protocolsCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", protocolsCheck.Text);
+            }
+
+            if (finalFantasyCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", finalFantasyCheck.Text);
+            }
+
+            if (calculusCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", calculusCheck.Text);
+            }
+
+            if (zackFairCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", zackFairCheck.Text);
+            }
+
+            if (usCheck.Checked)
+            {
+                subjectList += String.Format(",{0}", usCheck.Text);
+            }
+
+            try
+            {
+                IPEndPoint serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
+                string publishMsg = String.Format("SUBJECTS,{0}{1}", subjectTextBox.Text, subjectList);
+                bus = Encoding.ASCII.GetBytes(publishMsg);
+                clients.Last().RestartClient();
+                clients.Last().UdpClient.Send(bus, bus.Length, serverIpTest);
+                bus = clients.Last().UdpClient.Receive(ref serverIpTest);
+
+                bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+
+                if (Int64.Parse(myString) == 7)
+                {
+                    richTextBox1.Text += String.Format("subject list for {0} updated to {1}", subjectTextBox.Text, subjectList) + Environment.NewLine;
+                }
+                else
+                {
+                    richTextBox1.Text += String.Format("subject list for {0} rejected", subjectTextBox.Text) + Environment.NewLine;
+                }
+
+            }
+            catch (Exception excep)
+            {
+                richTextBox1.Text += excep.Message + Environment.NewLine;
+            }
+
         }
     }
 }

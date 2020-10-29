@@ -58,7 +58,7 @@ namespace UdpCLientFinalForm
             this.hostClientBox = new System.Windows.Forms.TextBox();
             this.nameClientBox = new System.Windows.Forms.TextBox();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.submitSubjectsButton = new System.Windows.Forms.Button();
             this.subjectTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.usCheck = new System.Windows.Forms.CheckBox();
@@ -344,7 +344,7 @@ namespace UdpCLientFinalForm
             // 
             // subjectGroupBox
             // 
-            this.subjectGroupBox.Controls.Add(this.button1);
+            this.subjectGroupBox.Controls.Add(this.submitSubjectsButton);
             this.subjectGroupBox.Controls.Add(this.subjectTextBox);
             this.subjectGroupBox.Controls.Add(this.label1);
             this.subjectGroupBox.Controls.Add(this.usCheck);
@@ -364,15 +364,15 @@ namespace UdpCLientFinalForm
             this.subjectGroupBox.TabStop = false;
             this.subjectGroupBox.Text = "Subjects";
             // 
-            // button1
+            // submitSubjectsButton
             // 
-            this.button1.Location = new System.Drawing.Point(201, 192);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 29);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Submit";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.submitButton_Click);
+            this.submitSubjectsButton.Location = new System.Drawing.Point(201, 192);
+            this.submitSubjectsButton.Name = "submitSubjectsButton";
+            this.submitSubjectsButton.Size = new System.Drawing.Size(94, 29);
+            this.submitSubjectsButton.TabIndex = 10;
+            this.submitSubjectsButton.Text = "Submit";
+            this.submitSubjectsButton.UseVisualStyleBackColor = true;
+            this.submitSubjectsButton.Click += new System.EventHandler(this.submitSubjectsButton_Click);
             // 
             // subjectTextBox
             // 
@@ -544,7 +544,7 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.Label subjectLabel;
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.GroupBox subjectGroupBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button submitSubjectsButton;
         private System.Windows.Forms.TextBox subjectTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox usCheck;

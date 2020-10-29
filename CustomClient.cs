@@ -65,6 +65,7 @@ namespace UdpCLientFinalForm
             UdpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
             UdpClient.Client.ReceiveTimeout = 3000;
             UdpClient.Client.SendTimeout = 3000;
+            UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         }
 
         /// <summary>
@@ -112,7 +113,6 @@ namespace UdpCLientFinalForm
 
         public void CloseConnection(IPEndPoint serverIP)
         {
-            UdpClient.Client.Connect(serverIP);
             UdpClient.Client.Shutdown(SocketShutdown.Both);
             UdpClient.Client.Disconnect(true);
             UdpClient.Client = null;
