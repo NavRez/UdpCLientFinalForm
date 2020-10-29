@@ -52,6 +52,7 @@ namespace UdpCLientFinalForm
             UdpClient = new UdpClient(ip);
             UdpClient.Client.ReceiveTimeout = 3000;
             UdpClient.Client.SendTimeout = 3000;
+            UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
         }
         /// <summary>
@@ -59,9 +60,12 @@ namespace UdpCLientFinalForm
         /// </summary>
         public void RestartClient()
         {
+            UdpClient.Close();
+            UdpClient = null;
             UdpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
             UdpClient.Client.ReceiveTimeout = 3000;
             UdpClient.Client.SendTimeout = 3000;
+            UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         }
 
         /// <summary>
@@ -74,6 +78,7 @@ namespace UdpCLientFinalForm
             ClientHost = newHost;
             ClientPort = newPort;
             ClientIP = newHost + "." + newPort.ToString();
+            RestartClient();
         }
 
 
@@ -104,7 +109,15 @@ namespace UdpCLientFinalForm
         //May be needed if registered gets set to false to remove all the information of the object
         protected virtual void Dispose(bool disposing)
         {
+        }
 
+        public void CloseConnection(IPEndPoint serverIP)
+        {
+            UdpClient.Client.Shutdown(SocketShutdown.Both);
+            UdpClient.Client.Disconnect(true);
+            UdpClient.Client = null;
+            UdpClient.Close();
+            UdpClient = null;
         }
 
     }
