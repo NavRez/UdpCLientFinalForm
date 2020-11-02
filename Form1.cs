@@ -18,6 +18,7 @@ namespace UdpCLientFinalForm
 
         IPEndPoint serverIpTest = null;
         CustomClient customClient = null;
+        Thread SocketListenerThread = null;
 
         public Form1()
         {
@@ -30,7 +31,6 @@ namespace UdpCLientFinalForm
             hostTextBox.Text = "127.0.0.2";
             nameTextBox.Text = "Testing";
             portTextBox.Text = "5080";
-
         }
 
         private void createButton_Click(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace UdpCLientFinalForm
 
                 customClient.UdpClient.Connect(serverIpTest);
 
-                Thread SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+                SocketListenerThread = new Thread(new ThreadStart(SocketListener));
                 SocketListenerThread.IsBackground = true;
                 SocketListenerThread.Start();
 
@@ -98,27 +98,35 @@ namespace UdpCLientFinalForm
         private void SocketListener() 
         {
             int sleepVal = 2000; //2 seconds per check
+           
             while (true)
             {
-                try
+                if (customClient.UdpClient != null)
                 {
-                    bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
-                    customClient.UdpClient.Send(bus, bus.Length);
-                    bus = customClient.UdpClient.Receive(ref serverIpTest);
-                    bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                    string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                    UpdateRegisterUserTextBox("Connection good");
+                    try
+                    {
+                        //For debuging purposes: Sends a ping to the server
+                        //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
+                        //customClient.UdpClient.Send(bus, bus.Length);
+
+                        bus = customClient.UdpClient.Receive(ref serverIpTest);
+                        bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                        string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+                        UpdateRegisterUserTextBox("Connection good");
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        string myString = "Failure trying to receive message: " + ex;
+                        Console.WriteLine("Failure trying to receive message: " + ex);
+                        UpdateRegisterUserTextBox("Connection failed");
+                        
+                    }
                     Thread.Sleep(sleepVal);
+                    //customClient.Socket.Connect(serverIP);
                 }
-                catch(Exception ex)
-                {
-                    string myString = "Failure trying to receive message: " + ex;
-                    Console.WriteLine("Failure trying to receive message: " + ex);
-                    UpdateRegisterUserTextBox("Connection failed");
-                    Thread.Sleep(sleepVal);
-                }
-                //customClient.Socket.Connect(serverIP);
             }
+            
         }
 
         //Goes to main thread to update the textbox (otherwise crash)
@@ -231,54 +239,6 @@ namespace UdpCLientFinalForm
 
         }
 
-        //THESE FUNCTIONS SEEM KINDA USELESS, they don't seem to work
-        /*
-        protected void OnUdpData(IAsyncResult result)
-        {
-            // this is what had been passed into BeginReceive as the second parameter:
-            customClient = result.AsyncState as CustomClient;
-            // points towards whoever had sent the message:
-            IPEndPoint source = new IPEndPoint(0, 0);
-            // get the actual message and fill out the source:
-            byte[] message = customClient.EndReceive(result, ref serverIP);
-            // do what you'd like with `message` here:
-            Console.WriteLine("Got " + message.Length + " bytes from " + source);
-            registeredUsersBox.Text += ("Got " + message.Length + " bytes from " + source);
-            // schedule the next receive operation once reading is done:
-            customClient.BeginReceive(new AsyncCallback(OnUdpData), serverIP);
-        }
-
-
-        //This is another method I found
-        public static async Task<byte[]> ReceiveAsync(byte[] datagram)
-        {
-            using (var client = new UdpClient(5555))
-            {
-                client.Client.ReceiveTimeout = 200;
-                await client.SendAsync(datagram, datagram.Length, "10.0.0.50", 5555);
-                var buffer = await client.ReceiveAsync();
-                return buffer.Buffer;
-            }
-        }
-
-        //Another method I found
-        private static void UDPListener(CustomClient client)
-        {
-            Task.Run(async () =>
-            {
-                using var udpClient = client;
-                string loggingEvent = "";
-                while (true)
-                {
-
-                    //IPEndPoint object will allow us to read datagrams sent from any source.
-                    var receivedResults = await udpClient.ReceiveAsync();
-                    loggingEvent += Encoding.ASCII.GetString(receivedResults.Buffer);
-                }
-            });
-        }
-        */
-
         private void removeButton_Click(object sender, EventArgs e)
         {
 
@@ -296,7 +256,7 @@ namespace UdpCLientFinalForm
 
                 if (Int64.Parse(myString) == 7)
                 {
-                    richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
+                    richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;                   
                     clients.Last().CloseConnection(serverIpTest);
                     clients.Clear();
                     hostTextBox.Enabled = true;

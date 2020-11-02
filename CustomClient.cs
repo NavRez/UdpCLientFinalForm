@@ -120,10 +120,10 @@ namespace UdpCLientFinalForm
         {
 
             UdpClient.Client.Shutdown(SocketShutdown.Both);
-            UdpClient.Client.Disconnect(true);
             UdpClient.Client = null;
             UdpClient.Close();
             UdpClient = null;
+
 
         }
 
