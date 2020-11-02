@@ -16,7 +16,7 @@ namespace UdpCLientFinalForm
         public bool Registered { get; set; }
         public List<string> ClientSubjects { get; set; }
         public int ClientPort { get; set; }
-        public UdpClient Socket { get; set; }
+        public UdpClient UdpClient { get; set; }
         IPEndPoint ipEndPoint;
 
 
@@ -33,9 +33,9 @@ namespace UdpCLientFinalForm
             ClientSubjects = _subject;
             Registered = _registered;
             IPEndPoint ip = new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort);
-            Socket = new UdpClient(ip);
-            Socket.Client.ReceiveTimeout = 3000;
-            Socket.Client.SendTimeout = 3000;
+            UdpClient = new UdpClient(ip);
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
         }
         /// <summary>
         /// Initialize the custom client, which includes a name and sets the receive and send timeouts
@@ -49,12 +49,13 @@ namespace UdpCLientFinalForm
             ClientHost = host;
             ClientPort = port;
             ClientIP = ClientHost + "." + ClientPort.ToString();
+
             ipEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
-            Socket = new UdpClient(ipEndPoint);
-            //Socket.Connect(ipEndPoint);
-            Socket.Client.ReceiveTimeout = 3000;
-            Socket.Client.SendTimeout = 3000;
-            //Socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            UdpClient = new UdpClient(ipEndPoint);
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
+            UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
 
         }
         /// <summary>
@@ -62,12 +63,14 @@ namespace UdpCLientFinalForm
         /// </summary>
         public void RestartClient()
         {
-            Socket.Close();
-            Socket = null;
-            Socket = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
-            Socket.Client.ReceiveTimeout = 3000;
-            Socket.Client.SendTimeout = 3000;
-            Socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
+            UdpClient.Close();
+            UdpClient = null;
+            UdpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
+            UdpClient.Client.ReceiveTimeout = 3000;
+            UdpClient.Client.SendTimeout = 3000;
+            UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
         }
 
         /// <summary>
@@ -115,11 +118,13 @@ namespace UdpCLientFinalForm
 
         public void CloseConnection(IPEndPoint serverIP)
         {
-            Socket.Client.Shutdown(SocketShutdown.Both);
-            Socket.Client.Disconnect(true);
-            Socket.Client = null;
-            Socket.Close();
-            Socket = null;
+
+            UdpClient.Client.Shutdown(SocketShutdown.Both);
+            UdpClient.Client.Disconnect(true);
+            UdpClient.Client = null;
+            UdpClient.Close();
+            UdpClient = null;
+
         }
 
     }
