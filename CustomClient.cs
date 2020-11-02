@@ -17,6 +17,7 @@ namespace UdpCLientFinalForm
         public List<string> ClientSubjects { get; set; }
         public int ClientPort { get; set; }
         public UdpClient UdpClient { get; set; }
+        IPEndPoint ipEndPoint;
 
 
 
@@ -48,11 +49,13 @@ namespace UdpCLientFinalForm
             ClientHost = host;
             ClientPort = port;
             ClientIP = ClientHost + "." + ClientPort.ToString();
-            IPEndPoint ip = new IPEndPoint(IPAddress.Parse(host), port);
-            UdpClient = new UdpClient(ip);
+
+            ipEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+            UdpClient = new UdpClient(ipEndPoint);
             UdpClient.Client.ReceiveTimeout = 3000;
             UdpClient.Client.SendTimeout = 3000;
             UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
 
         }
         /// <summary>
@@ -60,12 +63,14 @@ namespace UdpCLientFinalForm
         /// </summary>
         public void RestartClient()
         {
+
             UdpClient.Close();
             UdpClient = null;
             UdpClient = new UdpClient(new IPEndPoint(IPAddress.Parse(ClientHost), ClientPort));
             UdpClient.Client.ReceiveTimeout = 3000;
             UdpClient.Client.SendTimeout = 3000;
             UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+
         }
 
         /// <summary>
@@ -113,11 +118,13 @@ namespace UdpCLientFinalForm
 
         public void CloseConnection(IPEndPoint serverIP)
         {
+
             UdpClient.Client.Shutdown(SocketShutdown.Both);
-            UdpClient.Client.Disconnect(true);
             UdpClient.Client = null;
             UdpClient.Close();
             UdpClient = null;
+
+
         }
 
     }
