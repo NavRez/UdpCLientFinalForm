@@ -23,7 +23,6 @@ namespace UdpCLientFinalForm
 
         IPEndPoint serverIP = null;
         CustomClient customClient = null;
-
         private void defaultButton_Click(object sender, EventArgs e)
         {
             hostTextBox.Text = "127.0.0.2";
@@ -41,20 +40,29 @@ namespace UdpCLientFinalForm
                 clients.Add(customClient);
                 serverIP = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
 
-                bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
-                customClient.UdpClient.Connect(serverIP);
-                customClient.UdpClient.Send(bus, bus.Length);
-                bus = customClient.UdpClient.Receive(ref serverIP);
+                customClient.Socket.Connect(serverIP);
 
-                bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+                Thread SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+                SocketListenerThread.IsBackground = true;
+                SocketListenerThread.Start();
+                
+                //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
 
-                registeredUsersBox.Text += myString + Environment.NewLine;
-                //UDPListener(customClient);
+                //customClient.Socket.Send(bus, bus.Length);
+                //bus = customClient.Socket.Receive(ref serverIP);
 
-                customClient.BeginReceive(new AsyncCallback(OnUdpData), customClient);
-                Console.WriteLine("Exiting connection...");
-                customClient.UdpClient.Close();
+                //bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                //string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+
+                //registeredUsersBox.Text += myString + Environment.NewLine;
+
+                //////These 2 functions are probably bad
+                ////udplistener(customclient);
+                ////customClient.BeginReceive(new AsyncCallback(OnUdpData), customClient);
+
+
+                //Console.WriteLine("Exiting connection...");
+                //customClient.Socket.Close();
 
             }
             catch (Exception excep)
@@ -108,6 +116,54 @@ namespace UdpCLientFinalForm
 
         //    }
         //}
+
+        
+        //Function ran on a thread to listen for server updates
+        private void SocketListener() 
+        {
+           
+            while (true)
+            {
+                try
+                {
+                    bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
+                    customClient.Socket.Send(bus, bus.Length);
+                    bus = customClient.Socket.Receive(ref serverIP);
+                    bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                    string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+                    UpdateRegisterUserTextBox("Connection good");
+                    Thread.Sleep(5000);
+                }
+                catch(Exception ex)
+                {
+                    string myString = "Failure trying to receive message: " + ex;
+                    Console.WriteLine("Failure trying to receive message: " + ex);
+                    UpdateRegisterUserTextBox("Connection failed");
+                    Thread.Sleep(5000);
+                }
+                //customClient.Socket.Connect(serverIP);
+                
+
+                
+            }
+        }
+
+        delegate void SetTextCallback(string myString);
+        private void UpdateRegisterUserTextBox(string myString)
+        {
+            if (registeredUsersBox.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(UpdateRegisterUserTextBox);
+                this.Invoke(d, new object[] { myString });
+            }
+            else
+            {
+                registeredUsersBox.Clear();
+                registeredUsersBox.Text += myString + Environment.NewLine;
+
+            }
+                
+        }
 
         private void updateButton_CheckedChanged(object sender, EventArgs e)
         {
@@ -167,6 +223,8 @@ namespace UdpCLientFinalForm
 
         }
 
+        //THESE FUNCTIONS SEEM KINDA USELESS, they don't seem to work
+        /*
         protected void OnUdpData(IAsyncResult result)
         {
             // this is what had been passed into BeginReceive as the second parameter:
@@ -177,6 +235,7 @@ namespace UdpCLientFinalForm
             byte[] message = customClient.EndReceive(result, ref serverIP);
             // do what you'd like with `message` here:
             Console.WriteLine("Got " + message.Length + " bytes from " + source);
+            registeredUsersBox.Text += ("Got " + message.Length + " bytes from " + source);
             // schedule the next receive operation once reading is done:
             customClient.BeginReceive(new AsyncCallback(OnUdpData), serverIP);
         }
@@ -210,6 +269,7 @@ namespace UdpCLientFinalForm
                 }
             });
         }
+        */
 
     }
         }
