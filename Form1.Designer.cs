@@ -71,9 +71,20 @@ namespace UdpCLientFinalForm
             this.pokemonCheck = new System.Windows.Forms.CheckBox();
             this.disneMarvelCheck = new System.Windows.Forms.CheckBox();
             this.cmpEngCheck = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.serverLabel2 = new System.Windows.Forms.LinkLabel();
+            this.ServerLabel1 = new System.Windows.Forms.LinkLabel();
+            this.serverHostBox2 = new System.Windows.Forms.TextBox();
+            this.serverPortBox2 = new System.Windows.Forms.TextBox();
+            this.serverHostLabel1 = new System.Windows.Forms.Label();
+            this.serverHostBox1 = new System.Windows.Forms.TextBox();
+            this.serverPortLabel2 = new System.Windows.Forms.Label();
+            this.serverPortBox1 = new System.Windows.Forms.TextBox();
+            this.logLabel = new System.Windows.Forms.Label();
             this.registerGroup.SuspendLayout();
             this.clientOperationBox.SuspendLayout();
             this.subjectGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // registerGroup
@@ -91,14 +102,14 @@ namespace UdpCLientFinalForm
             this.registerGroup.Controls.Add(this.nameTextBox);
             this.registerGroup.Location = new System.Drawing.Point(12, 12);
             this.registerGroup.Name = "registerGroup";
-            this.registerGroup.Size = new System.Drawing.Size(374, 248);
+            this.registerGroup.Size = new System.Drawing.Size(374, 272);
             this.registerGroup.TabIndex = 0;
             this.registerGroup.TabStop = false;
             this.registerGroup.Text = "Register Clients";
             // 
             // removeButton
             // 
-            this.removeButton.Location = new System.Drawing.Point(279, 144);
+            this.removeButton.Location = new System.Drawing.Point(279, 163);
             this.removeButton.Name = "removeButton";
             this.removeButton.Size = new System.Drawing.Size(94, 29);
             this.removeButton.TabIndex = 10;
@@ -109,7 +120,7 @@ namespace UdpCLientFinalForm
             // labelRegisterResults
             // 
             this.labelRegisterResults.AutoSize = true;
-            this.labelRegisterResults.Location = new System.Drawing.Point(7, 92);
+            this.labelRegisterResults.Location = new System.Drawing.Point(8, 112);
             this.labelRegisterResults.Name = "labelRegisterResults";
             this.labelRegisterResults.Size = new System.Drawing.Size(139, 20);
             this.labelRegisterResults.TabIndex = 9;
@@ -117,7 +128,7 @@ namespace UdpCLientFinalForm
             // 
             // registeredUsersBox
             // 
-            this.registeredUsersBox.Location = new System.Drawing.Point(6, 122);
+            this.registeredUsersBox.Location = new System.Drawing.Point(7, 144);
             this.registeredUsersBox.Name = "registeredUsersBox";
             this.registeredUsersBox.Size = new System.Drawing.Size(266, 120);
             this.registeredUsersBox.TabIndex = 8;
@@ -125,7 +136,7 @@ namespace UdpCLientFinalForm
             // 
             // defaultButton
             // 
-            this.defaultButton.Location = new System.Drawing.Point(279, 215);
+            this.defaultButton.Location = new System.Drawing.Point(279, 234);
             this.defaultButton.Name = "defaultButton";
             this.defaultButton.Size = new System.Drawing.Size(94, 29);
             this.defaultButton.TabIndex = 7;
@@ -135,7 +146,7 @@ namespace UdpCLientFinalForm
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(279, 179);
+            this.createButton.Location = new System.Drawing.Point(279, 198);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(94, 29);
             this.createButton.TabIndex = 6;
@@ -199,9 +210,9 @@ namespace UdpCLientFinalForm
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(401, 27);
+            this.richTextBox1.Location = new System.Drawing.Point(6, 139);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(365, 227);
+            this.richTextBox1.Size = new System.Drawing.Size(392, 124);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
@@ -359,14 +370,14 @@ namespace UdpCLientFinalForm
             this.subjectGroupBox.Controls.Add(this.cmpEngCheck);
             this.subjectGroupBox.Location = new System.Drawing.Point(418, 290);
             this.subjectGroupBox.Name = "subjectGroupBox";
-            this.subjectGroupBox.Size = new System.Drawing.Size(311, 227);
+            this.subjectGroupBox.Size = new System.Drawing.Size(415, 227);
             this.subjectGroupBox.TabIndex = 3;
             this.subjectGroupBox.TabStop = false;
             this.subjectGroupBox.Text = "Subjects";
             // 
             // submitSubjectsButton
             // 
-            this.submitSubjectsButton.Location = new System.Drawing.Point(201, 192);
+            this.submitSubjectsButton.Location = new System.Drawing.Point(288, 192);
             this.submitSubjectsButton.Name = "submitSubjectsButton";
             this.submitSubjectsButton.Size = new System.Drawing.Size(94, 29);
             this.submitSubjectsButton.TabIndex = 10;
@@ -393,7 +404,7 @@ namespace UdpCLientFinalForm
             // usCheck
             // 
             this.usCheck.AutoSize = true;
-            this.usCheck.Location = new System.Drawing.Point(201, 140);
+            this.usCheck.Location = new System.Drawing.Point(288, 140);
             this.usCheck.Name = "usCheck";
             this.usCheck.Size = new System.Drawing.Size(99, 24);
             this.usCheck.TabIndex = 4;
@@ -403,7 +414,7 @@ namespace UdpCLientFinalForm
             // calculusCheck
             // 
             this.calculusCheck.AutoSize = true;
-            this.calculusCheck.Location = new System.Drawing.Point(201, 110);
+            this.calculusCheck.Location = new System.Drawing.Point(288, 110);
             this.calculusCheck.Name = "calculusCheck";
             this.calculusCheck.Size = new System.Drawing.Size(85, 24);
             this.calculusCheck.TabIndex = 4;
@@ -413,7 +424,7 @@ namespace UdpCLientFinalForm
             // protocolsCheck
             // 
             this.protocolsCheck.AutoSize = true;
-            this.protocolsCheck.Location = new System.Drawing.Point(201, 80);
+            this.protocolsCheck.Location = new System.Drawing.Point(288, 80);
             this.protocolsCheck.Name = "protocolsCheck";
             this.protocolsCheck.Size = new System.Drawing.Size(93, 24);
             this.protocolsCheck.TabIndex = 4;
@@ -433,7 +444,7 @@ namespace UdpCLientFinalForm
             // marioCheck
             // 
             this.marioCheck.AutoSize = true;
-            this.marioCheck.Location = new System.Drawing.Point(201, 20);
+            this.marioCheck.Location = new System.Drawing.Point(288, 20);
             this.marioCheck.Name = "marioCheck";
             this.marioCheck.Size = new System.Drawing.Size(70, 24);
             this.marioCheck.TabIndex = 0;
@@ -463,7 +474,7 @@ namespace UdpCLientFinalForm
             // pokemonCheck
             // 
             this.pokemonCheck.AutoSize = true;
-            this.pokemonCheck.Location = new System.Drawing.Point(201, 50);
+            this.pokemonCheck.Location = new System.Drawing.Point(288, 50);
             this.pokemonCheck.Name = "pokemonCheck";
             this.pokemonCheck.Size = new System.Drawing.Size(92, 24);
             this.pokemonCheck.TabIndex = 4;
@@ -490,14 +501,116 @@ namespace UdpCLientFinalForm
             this.cmpEngCheck.Text = "computer engineering";
             this.cmpEngCheck.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.serverLabel2);
+            this.groupBox1.Controls.Add(this.ServerLabel1);
+            this.groupBox1.Controls.Add(this.serverHostBox2);
+            this.groupBox1.Controls.Add(this.serverPortBox2);
+            this.groupBox1.Controls.Add(this.serverHostLabel1);
+            this.groupBox1.Controls.Add(this.serverHostBox1);
+            this.groupBox1.Controls.Add(this.serverPortLabel2);
+            this.groupBox1.Controls.Add(this.serverPortBox1);
+            this.groupBox1.Controls.Add(this.logLabel);
+            this.groupBox1.Controls.Add(this.richTextBox1);
+            this.groupBox1.Location = new System.Drawing.Point(413, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(420, 272);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Setup and Log";
+            // 
+            // serverLabel2
+            // 
+            this.serverLabel2.AutoSize = true;
+            this.serverLabel2.Location = new System.Drawing.Point(32, 76);
+            this.serverLabel2.Name = "serverLabel2";
+            this.serverLabel2.Size = new System.Drawing.Size(69, 20);
+            this.serverLabel2.TabIndex = 6;
+            this.serverLabel2.TabStop = true;
+            this.serverLabel2.Text = "Server 2 :";
+            // 
+            // ServerLabel1
+            // 
+            this.ServerLabel1.AutoSize = true;
+            this.ServerLabel1.Location = new System.Drawing.Point(32, 39);
+            this.ServerLabel1.Name = "ServerLabel1";
+            this.ServerLabel1.Size = new System.Drawing.Size(69, 20);
+            this.ServerLabel1.TabIndex = 6;
+            this.ServerLabel1.TabStop = true;
+            this.ServerLabel1.Text = "Server 1 :";
+            // 
+            // serverHostBox2
+            // 
+            this.serverHostBox2.Location = new System.Drawing.Point(116, 69);
+            this.serverHostBox2.Name = "serverHostBox2";
+            this.serverHostBox2.Size = new System.Drawing.Size(86, 27);
+            this.serverHostBox2.TabIndex = 2;
+            this.serverHostBox2.Text = "127.0.0.1";
+            this.serverHostBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // serverPortBox2
+            // 
+            this.serverPortBox2.Location = new System.Drawing.Point(221, 69);
+            this.serverPortBox2.Name = "serverPortBox2";
+            this.serverPortBox2.Size = new System.Drawing.Size(89, 27);
+            this.serverPortBox2.TabIndex = 3;
+            this.serverPortBox2.Text = "5080";
+            this.serverPortBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // serverHostLabel1
+            // 
+            this.serverHostLabel1.AutoSize = true;
+            this.serverHostLabel1.Location = new System.Drawing.Point(137, 13);
+            this.serverHostLabel1.Name = "serverHostLabel1";
+            this.serverHostLabel1.Size = new System.Drawing.Size(40, 20);
+            this.serverHostLabel1.TabIndex = 4;
+            this.serverHostLabel1.Text = "Host";
+            // 
+            // serverHostBox1
+            // 
+            this.serverHostBox1.Location = new System.Drawing.Point(116, 36);
+            this.serverHostBox1.Name = "serverHostBox1";
+            this.serverHostBox1.Size = new System.Drawing.Size(86, 27);
+            this.serverHostBox1.TabIndex = 2;
+            this.serverHostBox1.Text = "127.0.0.1";
+            this.serverHostBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // serverPortLabel2
+            // 
+            this.serverPortLabel2.AutoSize = true;
+            this.serverPortLabel2.Location = new System.Drawing.Point(241, 13);
+            this.serverPortLabel2.Name = "serverPortLabel2";
+            this.serverPortLabel2.Size = new System.Drawing.Size(35, 20);
+            this.serverPortLabel2.TabIndex = 5;
+            this.serverPortLabel2.Text = "Port";
+            // 
+            // serverPortBox1
+            // 
+            this.serverPortBox1.Location = new System.Drawing.Point(221, 36);
+            this.serverPortBox1.Name = "serverPortBox1";
+            this.serverPortBox1.Size = new System.Drawing.Size(89, 27);
+            this.serverPortBox1.TabIndex = 3;
+            this.serverPortBox1.Text = "8080";
+            this.serverPortBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // logLabel
+            // 
+            this.logLabel.AutoSize = true;
+            this.logLabel.Location = new System.Drawing.Point(6, 112);
+            this.logLabel.Name = "logLabel";
+            this.logLabel.Size = new System.Drawing.Size(40, 20);
+            this.logLabel.TabIndex = 2;
+            this.logLabel.Text = "Logs";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 529);
+            this.ClientSize = new System.Drawing.Size(835, 529);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.subjectGroupBox);
             this.Controls.Add(this.clientOperationBox);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.registerGroup);
             this.Name = "Form1";
             this.Text = "UdpClientManager";
@@ -507,6 +620,8 @@ namespace UdpCLientFinalForm
             this.clientOperationBox.PerformLayout();
             this.subjectGroupBox.ResumeLayout(false);
             this.subjectGroupBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -558,6 +673,16 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.CheckBox disneMarvelCheck;
         private System.Windows.Forms.CheckBox cmpEngCheck;
         private System.Windows.Forms.Button removeButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label serverHostLabel1;
+        private System.Windows.Forms.TextBox serverHostBox1;
+        private System.Windows.Forms.Label serverPortLabel2;
+        private System.Windows.Forms.TextBox serverPortBox1;
+        private System.Windows.Forms.Label logLabel;
+        private System.Windows.Forms.LinkLabel serverLabel2;
+        private System.Windows.Forms.LinkLabel ServerLabel1;
+        private System.Windows.Forms.TextBox serverHostBox2;
+        private System.Windows.Forms.TextBox serverPortBox2;
     }
 }
 

@@ -362,5 +362,21 @@ namespace UdpCLientFinalForm
             }
 
         }
+
+        private bool ServerConnection(CustomClient test,string host,string port)
+        {
+            try
+            {
+                serverIpTest = new IPEndPoint(IPAddress.Parse(host), Int32.Parse(port));
+                string createMsg = String.Format("REGISTER,1,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
+                bus = Encoding.ASCII.GetBytes(createMsg);
+                test.UdpClient.Send(bus, bus.Length, serverIpTest);
+                return true;
+            }
+            catch(SocketException sock)
+            {
+                return false;
+            }
+        }
     }
 }
