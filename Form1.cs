@@ -54,7 +54,6 @@ namespace UdpCLientFinalForm
                 
                 customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
                 clients.Add(customClient);
-
                 customClient.UdpClient.Connect(serverIpTest);
 
                 SocketListenerThread = new Thread(new ThreadStart(SocketListener));
@@ -226,8 +225,7 @@ namespace UdpCLientFinalForm
                     serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                     string updateMsg = String.Format("UPDATE,6,{0},{1},{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text);
                     bus = Encoding.ASCII.GetBytes(updateMsg);
-                    clients.Last().RestartClient();
-                    clients.Last().UdpClient.Send(bus, bus.Length, serverIpTest);
+                    clients.Last().UdpClient.Send(bus, bus.Length);
                     bus = clients.Last().UdpClient.Receive(ref serverIpTest);
 
                     bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
@@ -268,7 +266,6 @@ namespace UdpCLientFinalForm
                 string updateMsg = String.Format("DE-REGISTER,4,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
                 updateMsg = "abc";
                 bus = Encoding.ASCII.GetBytes(updateMsg);
-                //clients.Last().RestartClient();
                 clients.Last().UdpClient.Send(bus, bus.Length);
                 //bus = clients.Last().UdpClient.Receive(ref serverIpTest);
 
@@ -360,8 +357,7 @@ namespace UdpCLientFinalForm
                 serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                 string publishMsg = String.Format("SUBJECTS,{0}{1}", subjectTextBox.Text, subjectList);
                 bus = Encoding.ASCII.GetBytes(publishMsg);
-                clients.Last().RestartClient();
-                clients.Last().UdpClient.Send(bus, bus.Length, serverIpTest);
+                clients.Last().UdpClient.Send(bus, bus.Length);
                 bus = clients.Last().UdpClient.Receive(ref serverIpTest);
 
                 bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
