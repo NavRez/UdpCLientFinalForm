@@ -69,25 +69,9 @@ namespace UdpCLientFinalForm
                 subjectGroupBox.Enabled = true;
                 clientOperationBox.Enabled = true;
 
+                //Send a message to the server to ping connection
                 bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
                 customClient.UdpClient.Send(bus, bus.Length);
-
-
-                //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
-                //customClient.UdpClient.Send(bus, bus.Length);
-                //bus = customClient.UdpClient.Receive(ref serverIpTest);
-
-                //bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                //string serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-
-                //registeredUsersBox.Text += serverMessage + Environment.NewLine;
-                //customClient.UdpClient.Close();
-                Console.WriteLine("Exiting connection...");
-
-
-
-
-
             }
             catch (Exception excep)
             {
@@ -101,6 +85,7 @@ namespace UdpCLientFinalForm
         //Function ran on a thread to listen for server updates
         private void SocketListener() 
         {
+            
             int sleepVal = 2000; //2 seconds per check
            
             while (true)
@@ -116,14 +101,13 @@ namespace UdpCLientFinalForm
                         bus = customClient.UdpClient.Receive(ref serverIpTest);
                         bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                         serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                        UpdateRegisterUserTextBox(serverMessage);
-
+                        UpdateRichTextBoxText(registeredUsersBox, serverMessage);
                     }
                     catch (Exception ex)
                     {
                         serverMessage = "Failure trying to receive message: " + ex;
                         Console.WriteLine("Failure trying to receive message: " + ex);
-                        UpdateRegisterUserTextBox(serverMessage);
+                        UpdateRichTextBoxText(registeredUsersBox, serverMessage);
 
                     }
 
@@ -133,38 +117,15 @@ namespace UdpCLientFinalForm
                         Invoke((MethodInvoker)delegate { RemoveUser(); });
                     }
 
+
+
+                    //Thread.Sleep(sleepVal);
+
                     //reset the command
                     serverMessage = null;
-                    //Thread.Sleep(sleepVal);
-                    //customClient.Socket.Connect(serverIP);
-
-
-                }
-                else 
-                {
-                    Console.WriteLine("Null client");
                 }
             }
             
-        }
-
-        //Goes to main thread to update the textbox (otherwise crash)
-        delegate void SetTextCallback(string serverMessage);
-        private void UpdateRegisterUserTextBox(string serverMessage)
-        {
-            
-            if (registeredUsersBox.InvokeRequired)
-            {
-                SetTextCallback d = new SetTextCallback(UpdateRegisterUserTextBox);
-                this.Invoke(d, new object[] { serverMessage });
-            }
-            else
-            {
-                registeredUsersBox.Clear();
-                registeredUsersBox.Text += serverMessage + Environment.NewLine;
-
-            }
-                
         }
 
         private void updateButton_CheckedChanged(object sender, EventArgs e)
@@ -266,31 +227,7 @@ namespace UdpCLientFinalForm
                 string updateMsg = String.Format("DE-REGISTER,4,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
                 updateMsg = "abc";
                 bus = Encoding.ASCII.GetBytes(updateMsg);
-                customClient.UdpClient.Send(bus, bus.Length);
-                //bus = customClient.UdpClient.Receive(ref serverIpTest);
-
-                //bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                //string serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-
-                //if (Int64.Parse(serverMessage) == 7)
-                //{
-                //    richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;                   
-                //    customClient.CloseConnection(serverIpTest);
-                //    clients.Clear();
-                //hostTextBox.Enabled = true;
-                //nameTextBox.Enabled = true;
-                //portTextBox.Enabled = true;
-
-                //createButton.Enabled = true;
-                //removeButton.Enabled = false;
-                //subjectGroupBox.Enabled = false;
-                //clientOperationBox.Enabled = false;
-                //}
-                //else
-                //{
-                //    richTextBox1.Text += "Destruction rejected " + Environment.NewLine;
-                //}
-
+                customClient.UdpClient.Send(bus, bus.Length);                
             }
             catch (Exception excep)
             {
@@ -382,14 +319,14 @@ namespace UdpCLientFinalForm
 
         private void RemoveUser()
         {
+            
+            //UpdateRichTextBoxText(richTextBox1,
+            //String.Format("Destroying for {0} changed ip address to {1}:{2}",
+            //nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine);
 
-            UpdateRichTextBoxText(richTextBox1,
-            String.Format("Destroying for {0} changed ip address to {1}:{2}",
-            nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine);
-
-            //richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
+            richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
             customClient.CloseConnection(serverIpTest);
-            //clients.Clear();
+
             hostTextBox.Enabled = true;
             nameTextBox.Enabled = true;
             portTextBox.Enabled = true;
@@ -398,29 +335,9 @@ namespace UdpCLientFinalForm
             removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
-
         }
 
-        //private void UpdateRichTextBox(string serverMessage)
-        //{
-
-        //    if (registeredUsersBox.InvokeRequired)
-        //    {
-        //        SetTextCallback d = new SetTextCallback(UpdateRichTextBox);
-        //        this.Invoke(d, new object[] { serverMessage });
-        //    }
-        //    else
-        //    {
-        //        richTextBox1.Clear();
-        //        richTextBox1.Text += serverMessage + Environment.NewLine;
-
-        //    }
-
-        //}
-
-
-
-
+       
         /// <summary>
         /// Helper method to determin if invoke required, if so will rerun method on correct thread.
         /// if not do nothing.
@@ -478,11 +395,11 @@ namespace UdpCLientFinalForm
 
         //Or any control
         public void UpdateButtonEnable(Button button,bool value)
-    {
+        {
         //Check if invoke requied if so return - as i will be recalled in correct thread
         if (ControlInvokeRequired(button, () => UpdateButtonEnable(button, value))) return;
             button.Enabled = value;
-    }
+        }
 
 
     }
