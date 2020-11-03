@@ -131,8 +131,7 @@ namespace UdpCLientFinalForm
 
                     if (serverMessage.Equals("6"))
                     {
-                        
-                        RemoveUser();
+                        Invoke((MethodInvoker)delegate { RemoveUser(); });
                     }
 
                     //reset the command
@@ -395,15 +394,14 @@ namespace UdpCLientFinalForm
             //richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
             clients.Last().CloseConnection(serverIpTest);
             clients.Clear();
-            UpdateTextBoxEnable(hostTextBox, true);
-            UpdateTextBoxEnable(nameTextBox, true);
-            UpdateTextBoxEnable(portTextBox, true);
+            hostTextBox.Enabled = true;
+            nameTextBox.Enabled = true;
+            portTextBox.Enabled = true;
 
-            UpdateButtonEnable(createButton, true);
-            UpdateButtonEnable(removeButton, false);
-
-            UpdateGroupBoxEnable(subjectGroupBox, false);
-            UpdateGroupBoxEnable(clientOperationBox, false);
+            createButton.Enabled = true;
+            removeButton.Enabled = false;
+            subjectGroupBox.Enabled = false;
+            clientOperationBox.Enabled = false;
 
         }
 
