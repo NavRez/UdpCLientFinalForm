@@ -54,35 +54,45 @@ namespace UdpCLientFinalForm
                 customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
                 clients.Add(customClient);
 
-                customClient.UdpClient.Connect(serverIpTest);
+                //customClient.UdpClient.Connect(serverIpTest);
 
-                SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-                SocketListenerThread.IsBackground = true;
-                SocketListenerThread.Start();
+                //SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+                //SocketListenerThread.IsBackground = true;
+                //SocketListenerThread.Start();
 
-                hostTextBox.Enabled = false;
-                nameTextBox.Enabled = false;
-                portTextBox.Enabled = false;
+                string updateMsg = String.Format("REGISTER,1,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
+                bus = Encoding.ASCII.GetBytes(updateMsg);
+                customClient.UdpClient.Send(bus, bus.Length, serverIpTest);
+                bus = customClient.UdpClient.Receive(ref serverIpTest);
 
-                createButton.Enabled = false;
-                removeButton.Enabled = true;
-                subjectGroupBox.Enabled = true;
-                clientOperationBox.Enabled = true;
+                bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
+                string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
-                //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Requesting connection ...");
-                //customClient.UdpClient.Send(bus, bus.Length, serverIpTest);
-                //bus = customClient.UdpClient.Receive(ref serverIpTest);
+                string[] array = myString.Split(",");
 
-                //bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                //string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+                string val = array[0];
 
-                //registeredUsersBox.Text += myString + Environment.NewLine;
-                //customClient.UdpClient.Close();
-                Console.WriteLine("Exiting connection...");
+                if (val.Equals("REGISTERED"))
+                {
+                    hostTextBox.Enabled = false;
+                    nameTextBox.Enabled = false;
+                    portTextBox.Enabled = false;
+
+                    createButton.Enabled = false;
+                    removeButton.Enabled = true;
+                    subjectGroupBox.Enabled = true;
+                    clientOperationBox.Enabled = true;
 
 
-
-
+                    registeredUsersBox.Text += myString + Environment.NewLine;
+                    customClient.UdpClient.Close();
+                    Console.WriteLine("Exiting connection...");
+                }
+                else
+                {
+                    customClient.CloseConnection(serverIpTest);
+                    registeredUsersBox.Text += "REGISTER-DENIED" + Environment.NewLine;
+                }
 
             }
             catch (Exception excep)
@@ -213,7 +223,11 @@ namespace UdpCLientFinalForm
                     bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                     string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
-                    if (Int64.Parse(myString) == 7)
+                    string[] array = myString.Split(",");
+
+                    string val = array[0];
+
+                    if (val.Equals("UPDATE-CONFIRMED"))
                     {
                         richTextBox1.Text += String.Format("Update for {0} changed ip address to {1}:{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
                         clients.Last().ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
@@ -254,7 +268,12 @@ namespace UdpCLientFinalForm
                 bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                 string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
-                if (Int64.Parse(myString) == 7)
+
+                string[] array = myString.Split(",");
+
+                string val = array[0];
+
+                if (val.Equals("DE-REGISTERED"))
                 {
                     richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;                   
                     clients.Last().CloseConnection(serverIpTest);
@@ -346,7 +365,11 @@ namespace UdpCLientFinalForm
                 bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                 string myString = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
 
-                if (Int64.Parse(myString) == 7)
+                string[] array = myString.Split(",");
+
+                string val = array[0];
+
+                if (val.Equals("PUBLISH"))
                 {
                     richTextBox1.Text += String.Format("subject list for {0} updated to {1}", subjectTextBox.Text, subjectList) + Environment.NewLine;
                 }
