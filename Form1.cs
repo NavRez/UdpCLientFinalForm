@@ -53,7 +53,7 @@ namespace UdpCLientFinalForm
 
                 
                 customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
-                clients.Add(customClient);
+                //clients.Add(customClient);
                 customClient.UdpClient.Connect(serverIpTest);
 
                 SocketListenerThread = new Thread(new ThreadStart(SocketListener));
@@ -225,8 +225,8 @@ namespace UdpCLientFinalForm
                     serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                     string updateMsg = String.Format("UPDATE,6,{0},{1},{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text);
                     bus = Encoding.ASCII.GetBytes(updateMsg);
-                    clients.Last().UdpClient.Send(bus, bus.Length);
-                    bus = clients.Last().UdpClient.Receive(ref serverIpTest);
+                    customClient.UdpClient.Send(bus, bus.Length);
+                    bus = customClient.UdpClient.Receive(ref serverIpTest);
 
                     bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                     serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
@@ -234,7 +234,7 @@ namespace UdpCLientFinalForm
                     if (Int64.Parse(serverMessage) == 7)
                     {
                         richTextBox1.Text += String.Format("Update for {0} changed ip address to {1}:{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
-                        clients.Last().ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
+                        customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
                     }
                     else
                     {
@@ -266,8 +266,8 @@ namespace UdpCLientFinalForm
                 string updateMsg = String.Format("DE-REGISTER,4,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
                 updateMsg = "abc";
                 bus = Encoding.ASCII.GetBytes(updateMsg);
-                clients.Last().UdpClient.Send(bus, bus.Length);
-                //bus = clients.Last().UdpClient.Receive(ref serverIpTest);
+                customClient.UdpClient.Send(bus, bus.Length);
+                //bus = customClient.UdpClient.Receive(ref serverIpTest);
 
                 //bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                 //string serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
@@ -275,7 +275,7 @@ namespace UdpCLientFinalForm
                 //if (Int64.Parse(serverMessage) == 7)
                 //{
                 //    richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;                   
-                //    clients.Last().CloseConnection(serverIpTest);
+                //    customClient.CloseConnection(serverIpTest);
                 //    clients.Clear();
                 //hostTextBox.Enabled = true;
                 //nameTextBox.Enabled = true;
@@ -357,8 +357,8 @@ namespace UdpCLientFinalForm
                 serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                 string publishMsg = String.Format("SUBJECTS,{0}{1}", subjectTextBox.Text, subjectList);
                 bus = Encoding.ASCII.GetBytes(publishMsg);
-                clients.Last().UdpClient.Send(bus, bus.Length);
-                bus = clients.Last().UdpClient.Receive(ref serverIpTest);
+                customClient.UdpClient.Send(bus, bus.Length);
+                bus = customClient.UdpClient.Receive(ref serverIpTest);
 
                 bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                 serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
@@ -384,12 +384,12 @@ namespace UdpCLientFinalForm
         {
 
             UpdateRichTextBoxText(richTextBox1,
-                String.Format("Destroying for {0} changed ip address to {1}:{2}",
-                nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine);
+            String.Format("Destroying for {0} changed ip address to {1}:{2}",
+            nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine);
 
             //richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
-            clients.Last().CloseConnection(serverIpTest);
-            clients.Clear();
+            customClient.CloseConnection(serverIpTest);
+            //clients.Clear();
             hostTextBox.Enabled = true;
             nameTextBox.Enabled = true;
             portTextBox.Enabled = true;
