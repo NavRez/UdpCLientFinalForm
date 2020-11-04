@@ -20,6 +20,7 @@ namespace UdpCLientFinalForm
         CustomClient customClient = null;
         Thread SocketListenerThread = null;
         String serverMessage = null;
+        List<string> tempUserList = new List<string>();
 
         public Form1()
         {
@@ -60,17 +61,10 @@ namespace UdpCLientFinalForm
                 SocketListenerThread.IsBackground = true;
                 SocketListenerThread.Start();
 
-                hostTextBox.Enabled = false;
-                nameTextBox.Enabled = false;
-                portTextBox.Enabled = false;
-
-                createButton.Enabled = false;
-                removeButton.Enabled = true;
-                subjectGroupBox.Enabled = true;
-                clientOperationBox.Enabled = true;
-
+                //TODO: Change the sent message
                 //Send a message to the server to ping connection
-                bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
+                //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
+                bus = Encoding.ASCII.GetBytes("connect user request");
                 customClient.UdpClient.Send(bus, bus.Length);
             }
             catch (Exception excep)
@@ -101,20 +95,35 @@ namespace UdpCLientFinalForm
                         bus = customClient.UdpClient.Receive(ref serverIpTest);
                         bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                         serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                        UpdateRichTextBoxText(registeredUsersBox, serverMessage);
+                        //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
                     }
                     catch (Exception ex)
                     {
-                        serverMessage = "Failure trying to receive message: " + ex;
+                        serverMessage = "Connection failed ";
                         Console.WriteLine("Failure trying to receive message: " + ex);
                         UpdateRichTextBoxText(registeredUsersBox, serverMessage);
 
                     }
 
-
-                    if (serverMessage.Equals("6"))
+                    if (serverMessage.Equals("user connected"))
                     {
-                        Invoke((MethodInvoker)delegate { RemoveUser(); });
+                        Invoke((MethodInvoker)delegate { CreateUserReceived(); });
+                    }
+
+
+                    if (serverMessage.Equals("user removed"))
+                    {
+                        Invoke((MethodInvoker)delegate { RemoveUserReceived(); });
+                    }
+
+                    if(serverMessage.Equals("submit received"))
+                    {
+                        Invoke((MethodInvoker)delegate { SubmitReceived(); });
+                    }
+
+                    if (serverMessage.Equals("updated list received"))
+                    {
+                        Invoke((MethodInvoker)delegate { UpdatedListReceived(); });
                     }
 
 
@@ -183,33 +192,16 @@ namespace UdpCLientFinalForm
             {
                 try
                 {
-                    serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
+                    //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                     string updateMsg = String.Format("UPDATE,6,{0},{1},{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text);
                     bus = Encoding.ASCII.GetBytes(updateMsg);
+                    bus = Encoding.ASCII.GetBytes("send submit");
                     customClient.UdpClient.Send(bus, bus.Length);
-                    bus = customClient.UdpClient.Receive(ref serverIpTest);
-
-                    bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                    serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-
-                    if (Int64.Parse(serverMessage) == 7)
-                    {
-                        richTextBox1.Text += String.Format("Update for {0} changed ip address to {1}:{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
-                        customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
                     }
-                    else
-                    {
-                        richTextBox1.Text += "Update rejected " + Environment.NewLine;
-                    }
-                }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ermo)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     richTextBox1.Text += ermo.Message + Environment.NewLine;
                 }
-
-
             }
             else if (publishButton.Checked)
             {
@@ -220,12 +212,11 @@ namespace UdpCLientFinalForm
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-
             try
             {
                 //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                 string updateMsg = String.Format("DE-REGISTER,4,{0},{1},{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
-                updateMsg = "abc";
+                updateMsg = "remove user request";
                 bus = Encoding.ASCII.GetBytes(updateMsg);
                 customClient.UdpClient.Send(bus, bus.Length);                
             }
@@ -237,78 +228,64 @@ namespace UdpCLientFinalForm
 
         private void submitSubjectsButton_Click(object sender, EventArgs e)
         {
-            string subjectList = "";
+            tempUserList.Clear();
 
             if (marioCheck.Checked)
             {
-                subjectList += String.Format(",{0}", marioCheck.Text);
+                tempUserList.Add(marioCheck.Text);               
             }
 
             if (cmpEngCheck.Checked)
             {
-                subjectList += String.Format(",{0}", cmpEngCheck.Text);
+                tempUserList.Add(cmpEngCheck.Text);
             }
 
             if (disneMarvelCheck.Checked)
             {
-                subjectList += String.Format(",{0}", disneMarvelCheck.Text);
+                tempUserList.Add(disneMarvelCheck.Text);
             }
             
             if (pokemonCheck.Checked)
             {
-                subjectList += String.Format(",{0}", pokemonCheck.Text);
+                tempUserList.Add(pokemonCheck.Text);
             }
 
             if (mexicanCheck.Checked)
             {
-                subjectList += String.Format(",{0}", mexicanCheck.Text);
+                tempUserList.Add(mexicanCheck.Text);
             }
 
             if (protocolsCheck.Checked)
             {
-                subjectList += String.Format(",{0}", protocolsCheck.Text);
+                tempUserList.Add(protocolsCheck.Text);
             }
 
             if (finalFantasyCheck.Checked)
             {
-                subjectList += String.Format(",{0}", finalFantasyCheck.Text);
+                tempUserList.Add(finalFantasyCheck.Text);
             }
 
             if (calculusCheck.Checked)
             {
-                subjectList += String.Format(",{0}", calculusCheck.Text);
+                tempUserList.Add(calculusCheck.Text);
             }
 
             if (zackFairCheck.Checked)
             {
-                subjectList += String.Format(",{0}", zackFairCheck.Text);
+                tempUserList.Add(zackFairCheck.Text);
             }
 
             if (usCheck.Checked)
             {
-                subjectList += String.Format(",{0}", usCheck.Text);
+                tempUserList.Add(usCheck.Text);
             }
-
+            string combinedList = string.Join(", ", tempUserList.ToArray());
             try
             {
-                serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
-                string publishMsg = String.Format("SUBJECTS,{0}{1}", subjectTextBox.Text, subjectList);
+                string publishMsg = String.Format("SUBJECTS,{0}{1}", subjectTextBox.Text, combinedList);
                 bus = Encoding.ASCII.GetBytes(publishMsg);
+                bus = Encoding.ASCII.GetBytes("send updated list");
                 customClient.UdpClient.Send(bus, bus.Length);
-                bus = customClient.UdpClient.Receive(ref serverIpTest);
-
-                bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-
-                if (Int64.Parse(serverMessage) == 7)
-                {
-                    richTextBox1.Text += String.Format("subject list for {0} updated to {1}", subjectTextBox.Text, subjectList) + Environment.NewLine;
-                }
-                else
-                {
-                    richTextBox1.Text += String.Format("subject list for {0} rejected", subjectTextBox.Text) + Environment.NewLine;
-                }
-
             }
             catch (Exception excep)
             {
@@ -317,24 +294,56 @@ namespace UdpCLientFinalForm
 
         }
 
-        private void RemoveUser()
+        private void CreateUserReceived()
         {
-            
-            //UpdateRichTextBoxText(richTextBox1,
-            //String.Format("Destroying for {0} changed ip address to {1}:{2}",
-            //nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine);
+            //serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
+            //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
+            registeredUsersBox.Text = "User successfully Connected";
 
-            richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}", nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
+            hostTextBox.Enabled = false;
+            nameTextBox.Enabled = false;
+            portTextBox.Enabled = false;
+
+            createButton.Enabled = false;
+            removeButton.Enabled = true;
+            subjectGroupBox.Enabled = true;
+            clientOperationBox.Enabled = true;
+
+        }
+
+        private void RemoveUserReceived()
+        {
+          
+            richTextBox1.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}",
+                nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
             customClient.CloseConnection(serverIpTest);
 
             hostTextBox.Enabled = true;
             nameTextBox.Enabled = true;
             portTextBox.Enabled = true;
-
             createButton.Enabled = true;
+
             removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
+        }
+
+        private void SubmitReceived()
+        {
+            richTextBox1.Text += String.Format("Update for {0} changed ip address to {1}:{2}",
+            nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
+            customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
+            customClient.UdpClient.Connect(serverIpTest);
+        }
+
+        private void UpdatedListReceived()
+        {
+            customClient.ClientSubjects.Clear();
+            customClient.ClientSubjects = tempUserList;
+            string combinedList = "[ " + string.Join(", ", customClient.ClientSubjects.ToArray()) + " ]";
+
+            richTextBox1.Text += String.Format("subject list for {0} updated to:\n {1}",
+                subjectTextBox.Text, combinedList) + Environment.NewLine;
         }
 
        
