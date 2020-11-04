@@ -57,9 +57,9 @@ namespace UdpCLientFinalForm
                 //clients.Add(customClient);
                 customClient.UdpClient.Connect(serverIpTest);
 
-                //SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-                //SocketListenerThread.IsBackground = true;
-                //SocketListenerThread.Start();
+                SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+                SocketListenerThread.IsBackground = true;
+                SocketListenerThread.Start();
 
 
                 //TODO: Change the sent message
