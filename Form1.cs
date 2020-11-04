@@ -57,9 +57,10 @@ namespace UdpCLientFinalForm
                 //clients.Add(customClient);
                 customClient.UdpClient.Connect(serverIpTest);
 
-                SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-                SocketListenerThread.IsBackground = true;
-                SocketListenerThread.Start();
+                //SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+                //SocketListenerThread.IsBackground = true;
+                //SocketListenerThread.Start();
+
 
                 //TODO: Change the sent message
                 //Send a message to the server to ping connection
@@ -195,6 +196,7 @@ namespace UdpCLientFinalForm
                     //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
                     string updateMsg = String.Format("UPDATE,6,{0},{1},{2}", nameClientBox.Text, hostClientBox.Text, portClientBox.Text);
                     bus = Encoding.ASCII.GetBytes(updateMsg);
+
                     bus = Encoding.ASCII.GetBytes("send submit");
                     customClient.UdpClient.Send(bus, bus.Length);
                     }
@@ -219,6 +221,7 @@ namespace UdpCLientFinalForm
                 updateMsg = "remove user request";
                 bus = Encoding.ASCII.GetBytes(updateMsg);
                 customClient.UdpClient.Send(bus, bus.Length);                
+
             }
             catch (Exception excep)
             {
@@ -286,6 +289,7 @@ namespace UdpCLientFinalForm
                 bus = Encoding.ASCII.GetBytes(publishMsg);
                 bus = Encoding.ASCII.GetBytes("send updated list");
                 customClient.UdpClient.Send(bus, bus.Length);
+                
             }
             catch (Exception excep)
             {
