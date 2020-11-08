@@ -14,7 +14,7 @@ namespace UdpCLientFinalForm
         public string ClientHost { get; set; }
         public string ClientIP { get; set; }
         public bool Registered { get; set; }
-        public List<string> ClientSubjects { get; set; }
+        public List<string> ClientSubjects = new List<string>();
         public int ClientPort { get; set; }
         public UdpClient UdpClient { get; set; }
         IPEndPoint ipEndPoint;
