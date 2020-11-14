@@ -42,7 +42,7 @@ namespace UdpCLientFinalForm
             this.hostTextBox = new System.Windows.Forms.TextBox();
             this.labelName = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.richLogBox = new System.Windows.Forms.RichTextBox();
             this.clientOperationBox = new System.Windows.Forms.GroupBox();
             this.submitButton = new System.Windows.Forms.Button();
             this.subjectBox = new System.Windows.Forms.TextBox();
@@ -58,8 +58,8 @@ namespace UdpCLientFinalForm
             this.hostClientBox = new System.Windows.Forms.TextBox();
             this.nameClientBox = new System.Windows.Forms.TextBox();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
-            this.submitSubjectsButton = new System.Windows.Forms.Button();
             this.subjectTextBox = new System.Windows.Forms.TextBox();
+            this.submitSubjectsButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.usCheck = new System.Windows.Forms.CheckBox();
             this.calculusCheck = new System.Windows.Forms.CheckBox();
@@ -208,13 +208,13 @@ namespace UdpCLientFinalForm
             this.nameTextBox.Text = "Test";
             this.nameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // richTextBox1
+            // richLogBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 139);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(392, 124);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.richLogBox.Location = new System.Drawing.Point(6, 139);
+            this.richLogBox.Name = "richLogBox";
+            this.richLogBox.Size = new System.Drawing.Size(392, 124);
+            this.richLogBox.TabIndex = 1;
+            this.richLogBox.Text = "";
             // 
             // clientOperationBox
             // 
@@ -355,8 +355,8 @@ namespace UdpCLientFinalForm
             // 
             // subjectGroupBox
             // 
-            this.subjectGroupBox.Controls.Add(this.submitSubjectsButton);
             this.subjectGroupBox.Controls.Add(this.subjectTextBox);
+            this.subjectGroupBox.Controls.Add(this.submitSubjectsButton);
             this.subjectGroupBox.Controls.Add(this.label1);
             this.subjectGroupBox.Controls.Add(this.usCheck);
             this.subjectGroupBox.Controls.Add(this.calculusCheck);
@@ -375,6 +375,16 @@ namespace UdpCLientFinalForm
             this.subjectGroupBox.TabStop = false;
             this.subjectGroupBox.Text = "Subjects";
             // 
+            // subjectTextBox
+            // 
+            this.subjectTextBox.Location = new System.Drawing.Point(7, 192);
+            this.subjectTextBox.Name = "subjectTextBox";
+            this.subjectTextBox.ReadOnly = true;
+            this.subjectTextBox.Size = new System.Drawing.Size(95, 27);
+            this.subjectTextBox.TabIndex = 12;
+            this.subjectTextBox.Text = "Test";
+            this.subjectTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // submitSubjectsButton
             // 
             this.submitSubjectsButton.Location = new System.Drawing.Point(288, 192);
@@ -384,13 +394,6 @@ namespace UdpCLientFinalForm
             this.submitSubjectsButton.Text = "Submit";
             this.submitSubjectsButton.UseVisualStyleBackColor = true;
             this.submitSubjectsButton.Click += new System.EventHandler(this.submitSubjectsButton_Click);
-            // 
-            // subjectTextBox
-            // 
-            this.subjectTextBox.Location = new System.Drawing.Point(15, 194);
-            this.subjectTextBox.Name = "subjectTextBox";
-            this.subjectTextBox.Size = new System.Drawing.Size(84, 27);
-            this.subjectTextBox.TabIndex = 0;
             // 
             // label1
             // 
@@ -512,7 +515,7 @@ namespace UdpCLientFinalForm
             this.groupBox1.Controls.Add(this.serverPortLabel2);
             this.groupBox1.Controls.Add(this.serverPortBox1);
             this.groupBox1.Controls.Add(this.logLabel);
-            this.groupBox1.Controls.Add(this.richTextBox1);
+            this.groupBox1.Controls.Add(this.richLogBox);
             this.groupBox1.Location = new System.Drawing.Point(413, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(420, 272);
@@ -643,7 +646,7 @@ namespace UdpCLientFinalForm
 
         private List<CustomClient> clients = new List<CustomClient>();
         private byte[] bus = new byte[1024];
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richLogBox;
         private System.Windows.Forms.GroupBox clientOperationBox;
         private System.Windows.Forms.Label messageLabel;
         private System.Windows.Forms.RichTextBox richMessageBox;
@@ -660,7 +663,6 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.GroupBox subjectGroupBox;
         private System.Windows.Forms.Button submitSubjectsButton;
-        private System.Windows.Forms.TextBox subjectTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox usCheck;
         private System.Windows.Forms.CheckBox calculusCheck;
@@ -683,6 +685,7 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.LinkLabel ServerLabel1;
         private System.Windows.Forms.TextBox serverHostBox2;
         private System.Windows.Forms.TextBox serverPortBox2;
+        private System.Windows.Forms.TextBox subjectTextBox;
     }
 }
 
