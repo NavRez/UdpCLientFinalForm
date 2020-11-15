@@ -23,6 +23,8 @@ namespace UdpCLientFinalForm
         String[] messageArr;
         List<string> tempUserList = new List<string>();
         int countRQ = 0;
+        int connectedPort;
+        string connectedHost;
 
         public Form1()
         {
@@ -46,11 +48,10 @@ namespace UdpCLientFinalForm
 
             try
             {
-                serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 8080);
 
-                if (hostTextBox.Text.Equals("127.0.0.2"))
+                if (hostTextBox.Text.Equals(connectedHost))
                 {
-                    if (portTextBox.Text.Equals(8080.ToString()))
+                    if (portTextBox.Text.Equals(connectedPort.ToString()))
                     {
                         throw new InvalidCastException("Address cannot be the same as another Server");
                     }
@@ -120,34 +121,39 @@ namespace UdpCLientFinalForm
                         Invoke((MethodInvoker)delegate { CreateUserReceived(); });
                     }
 
-                    if (serverCommand.Equals("REGISTER-DENIED"))
+                    else if (serverCommand.Equals("REGISTER-DENIED"))
                     {
                         Invoke((MethodInvoker)delegate { DenyCreateUserReceived(); });
                     }
 
-                    if (serverCommand.Equals("DE-REGISTERED"))
+                    else if (serverCommand.Equals("DE-REGISTERED"))
                     {
                         Invoke((MethodInvoker)delegate { RemoveUserReceived(); });
                     }
 
-                    if(serverCommand.Equals("UPDATE-CONFIRMED") || serverCommand.Equals("MESSAGE"))
+                    else if(serverCommand.Equals("UPDATE-CONFIRMED") || serverCommand.Equals("MESSAGE"))
                     {
                         Invoke((MethodInvoker)delegate { SubmitReceived(); });
                     }
 
-                    if (serverCommand.Equals("UPDATE-DENIED") || serverCommand.Equals("PUBLISH-DENIED"))
+                    else if (serverCommand.Equals("UPDATE-DENIED") || serverCommand.Equals("PUBLISH-DENIED"))
                     {
                         Invoke((MethodInvoker)delegate { DenySubmitReceived(); });
                     }
 
-                    if (serverCommand.Equals("SUBJECTS-UPDATED"))
+                    else if (serverCommand.Equals("SUBJECTS-UPDATED"))
                     {
                         Invoke((MethodInvoker)delegate { UpdatedListReceived(); });
                     }
 
-                    if (serverCommand.Equals("SUBJECTS-REJECTED"))
+                    else if (serverCommand.Equals("SUBJECTS-REJECTED"))
                     {
                         Invoke((MethodInvoker)delegate { DenyUpdatedListReceived(); });
+                    }
+                    else if (serverCommand.Equals("CHANGE-SERVER"))
+                    {
+                        Invoke((MethodInvoker)delegate { ChangeServerReceived(); });
+
                     }
 
 
@@ -208,6 +214,10 @@ namespace UdpCLientFinalForm
             hostClientBox.Enabled = false;
             newPortClient.Enabled = false;
             portClientBox.Enabled = false;
+
+            serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
+            connectedPort = 5080;
+            connectedHost = "127.0.0.2";
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -402,6 +412,15 @@ namespace UdpCLientFinalForm
 
             richLogBox.Text += String.Format("subject list for {0} denied :\n {1}",
                 subjectTextBox.Text, combinedList) + Environment.NewLine;
+        }
+
+        private void ChangeServerReceived()
+        {
+            connectedHost = messageArr[1];
+            connectedPort = Int32.Parse(messageArr[2]);
+            serverIpTest = new IPEndPoint(IPAddress.Parse(connectedHost), connectedPort);
+            customClient.RestartClient();
+            customClient.UdpClient.Connect(serverIpTest);
         }
 
 
