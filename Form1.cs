@@ -103,12 +103,12 @@ namespace UdpCLientFinalForm
                         bus = customClient.UdpClient.Receive(ref serverIpTest);
                         bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                         serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                        //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
+                        UpdateRichTextBoxText(registeredUsersBox, serverMessage);
                     }
                     catch (Exception ex)
                     {
-                        serverMessage = "Connection failed ";
-                        Console.WriteLine("Failure trying to receive message: " + ex);
+                        //serverMessage = "Connection failed ";
+                        //Console.WriteLine("Failure trying to receive message: " + ex);
                         UpdateRichTextBoxText(registeredUsersBox, serverMessage);
 
                     }
@@ -215,8 +215,8 @@ namespace UdpCLientFinalForm
             newPortClient.Enabled = false;
             portClientBox.Enabled = false;
 
-            serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
-            connectedPort = 5080;
+            serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 8080);
+            connectedPort = 8080;
             connectedHost = "127.0.0.2";
         }
 
