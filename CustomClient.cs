@@ -58,14 +58,5 @@ namespace UdpCLientFinalForm
                 AddSubject(subject);
             }
         }
-
-        public void CloseConnection(IPEndPoint serverIP)
-        {
-            UdpClient.Client.Shutdown(SocketShutdown.Both);
-            UdpClient.Client = null;
-            UdpClient.Close();
-            UdpClient = null;
-        }
-
     }
 }

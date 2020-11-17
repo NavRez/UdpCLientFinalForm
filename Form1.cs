@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,20 +24,36 @@ namespace UdpCLientFinalForm
         String[] messageArr;
         List<string> tempUserList = new List<string>();
         int countRQ = 0;
-        int connectedPort;
-        string connectedHost;
 
+        IPEndPoint serverA = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 4444);
+        IPEndPoint serverB = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 3333);
+        IPEndPoint servingServer;
         public Form1()
         {
             InitializeComponent();
             GreyOutClientOperations();
+            servingServer = serverA;
+
+            labelPort.Visible = false;
+            portTextBox.Visible = false;
+            portTextBox.Enabled = false;
+
+
+            labelHost.Visible = false;
+            hostTextBox.Enabled = false;
+            hostTextBox.Visible = false;
+
+            publishButton.Checked = true;
+
+            updateButton.Enabled = false;
+            updateButton.Visible = false;
         }
 
         private void defaultButton_Click(object sender, EventArgs e)
         {
-            hostTextBox.Text = "127.0.0.2";
+            hostTextBox.Text = "127.0.0.1";
             nameTextBox.Text = "Testing";
-            portTextBox.Text = "5080";
+            portTextBox.Text = "4444";
         }
 
 
@@ -59,52 +76,14 @@ namespace UdpCLientFinalForm
         private void createButton_Click(object sender, EventArgs e)
         {
             customClient = new CustomClient(nameTextBox.Text);
-            IPEndPoint testServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 4444);
             bus = Encoding.ASCII.GetBytes("REGISTER,0,name");
-            
 
             SocketListenerThread = new Thread(new ThreadStart(SocketListener));
             SocketListenerThread.IsBackground = true;
             SocketListenerThread.Start();
 
             bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1}", countRQ++, customClient.ClientName));
-            customClient.UdpClient.Send(bus, bus.Length, testServer);
-            //var newPort = Int32.Parse(portTextBox.Text) + 1;
-            //portTextBox.Text = newPort.ToString();
-
-            //try
-            //{
-
-            //    if (hostTextBox.Text.Equals(connectedHost))
-            //    {
-            //        if (portTextBox.Text.Equals(connectedPort.ToString()))
-            //        {
-            //            throw new InvalidCastException("Address cannot be the same as another Server");
-            //        }
-            //    }
-
-
-            //    customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
-            //    subjectTextBox.Text = nameTextBox.Text;
-            //    //clients.Add(customClient);
-            //    customClient.UdpClient.Connect(serverIpTest);
-
-            //SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-            //SocketListenerThread.IsBackground = true;
-            //SocketListenerThread.Start();
-
-
-            //    //TODO: Change the sent message
-            //    //Send a message to the server to ping connection
-            //    //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
-            //    bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1},{2},{3}", countRQ++, nameTextBox.Text, hostTextBox.Text, portTextBox.Text));
-            //    //bus = Encoding.ASCII.GetBytes("connect user request");
-            //    customClient.UdpClient.Send(bus, bus.Length);
-            //}
-            //catch (Exception excep)
-            //{
-            //    richLogBox.Text += excep.Message + Environment.NewLine;
-            //}
+            customClient.UdpClient.Send(bus, bus.Length, servingServer);
         }
 
 
@@ -136,7 +115,6 @@ namespace UdpCLientFinalForm
                         //serverMessage = "Connection failed ";
                         //Console.WriteLine("Failure trying to receive message: " + ex);
                         UpdateRichTextBoxText(registeredUsersBox, serverMessage);
-
                     }
 
                     messageArr = serverMessage.Split(",");
@@ -182,10 +160,6 @@ namespace UdpCLientFinalForm
 
                     }
 
-
-
-                    //Thread.Sleep(sleepVal);
-
                     //reset the command
                     serverMessage = "";
                 }
@@ -207,6 +181,20 @@ namespace UdpCLientFinalForm
                 hostClientBox.Enabled = true;
                 newPortClient.Enabled = true;
                 portClientBox.Enabled = true;
+
+                labelPort.Visible = false;
+                portTextBox.Visible = false;
+                portTextBox.Enabled = false;
+
+
+                labelHost.Visible = false;
+                hostTextBox.Enabled = false;
+                hostTextBox.Visible = false;
+
+                publishButton.Checked = true;
+
+                updateButton.Enabled = false;
+                updateButton.Visible = false;
             }
         }
 
@@ -223,6 +211,21 @@ namespace UdpCLientFinalForm
                 hostClientBox.Enabled = false;
                 newPortClient.Enabled = false;
                 portClientBox.Enabled = false;
+
+
+                labelPort.Visible = false;
+                portTextBox.Visible = false;
+                portTextBox.Enabled = false;
+
+
+                labelHost.Visible = false;
+                hostTextBox.Enabled = false;
+                hostTextBox.Visible = false;
+
+                publishButton.Checked = true;
+
+                updateButton.Enabled = false;
+                updateButton.Visible = false;
             }
         }
 
@@ -242,55 +245,46 @@ namespace UdpCLientFinalForm
             newPortClient.Enabled = false;
             portClientBox.Enabled = false;
 
-            //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 8080);
-            //connectedPort = 8080;
-            connectedHost = "127.0.0.2";
+
+
+            labelPort.Visible = false;
+            portTextBox.Visible = false;
+            portTextBox.Enabled = false;
+
+
+            labelHost.Visible = false;
+            hostTextBox.Enabled = false;
+            hostTextBox.Visible = false;
+
+            publishButton.Checked = true;
+
+            updateButton.Enabled = false;
+            updateButton.Visible = false;
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
             if (updateButton.Checked)
             {
-                try
-                {
-                    //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
-                    string updateMsg = String.Format("UPDATE,{0},{1},{2},{3}",countRQ++, nameClientBox.Text, hostClientBox.Text, portClientBox.Text);
-                    bus = Encoding.ASCII.GetBytes(updateMsg);
-
-                    //bus = Encoding.ASCII.GetBytes("send submit");
-                    customClient.UdpClient.Send(bus, bus.Length);
-                    }
-                catch (Exception ermo)
-                {
-                    richLogBox.Text += ermo.Message + Environment.NewLine;
-                }
+            string updateMsg = String.Format("UPDATE,{0},{1}",countRQ++, nameClientBox.Text);
+            bus = Encoding.ASCII.GetBytes(updateMsg);
+            customClient.UdpClient.Send(bus, bus.Length, servingServer);
             }
-            else if (publishButton.Checked)
+
+            else
             {
                 string publishMsg = String.Format("PUBLISH,{0},{1},{2},{3}",countRQ++, nameClientBox.Text, subjectBox.Text, richMessageBox.Text);
                 bus = Encoding.ASCII.GetBytes(publishMsg);
-
-                //bus = Encoding.ASCII.GetBytes("send publish");
-                customClient.UdpClient.Send(bus, bus.Length);
+                customClient.UdpClient.Send(bus, bus.Length, servingServer);
             }
 
         }
 
         private void removeButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 5080);
-                string deregMsg = String.Format("DE-REGISTER,{0},{1},{2},{3}",countRQ++, nameTextBox.Text, hostTextBox.Text, portTextBox.Text);
-                //updateMsg = "remove user request";
-                bus = Encoding.ASCII.GetBytes(deregMsg);
-                customClient.UdpClient.Send(bus, bus.Length);                
-
-            }
-            catch (Exception excep)
-            {
-                richLogBox.Text += excep.Message + Environment.NewLine;
-            }
+        {      
+            string deregMsg = String.Format("DE-REGISTER,{0},{1}",countRQ++, nameTextBox.Text);
+            bus = Encoding.ASCII.GetBytes(deregMsg);
+            customClient.UdpClient.Send(bus, bus.Length, servingServer);                
         }
 
         private void submitSubjectsButton_Click(object sender, EventArgs e)
@@ -347,19 +341,10 @@ namespace UdpCLientFinalForm
                 tempUserList.Add(usCheck.Text);
             }
             string combinedList = string.Join("@", tempUserList.ToArray());
-            try
-            {
-                string subjectMsg = String.Format("SUBJECTS,{0},{1},{2}", countRQ++,subjectTextBox.Text, combinedList);
-                bus = Encoding.ASCII.GetBytes(subjectMsg);
-                //bus = Encoding.ASCII.GetBytes("send updated list");
-                customClient.UdpClient.Send(bus, bus.Length);
-                
-            }
-            catch (Exception excep)
-            {
-                richLogBox.Text += excep.Message + Environment.NewLine;
-            }
 
+            string subjectMsg = String.Format("SUBJECTS,{0},{1},{2}", countRQ++,customClient.ClientName, combinedList);
+            bus = Encoding.ASCII.GetBytes(subjectMsg);
+            customClient.UdpClient.Send(bus, bus.Length, servingServer);
         }
 
         private void CreateUserReceived()
@@ -377,6 +362,21 @@ namespace UdpCLientFinalForm
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
 
+
+            labelPort.Visible = false;
+            portTextBox.Visible = false;
+            portTextBox.Enabled = false;
+
+
+            labelHost.Visible = false;
+            hostTextBox.Enabled = false;
+            hostTextBox.Visible = false;
+
+            publishButton.Checked = true;
+
+            updateButton.Enabled = false;
+            updateButton.Visible = false;
+
         }
 
         private void DenyCreateUserReceived()
@@ -388,8 +388,7 @@ namespace UdpCLientFinalForm
         private void RemoveUserReceived()
         {
           
-            richLogBox.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}",
-                nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
+            richLogBox.Text += String.Format("Destroying for {0}", nameTextBox.Text) + Environment.NewLine;
 
             hostTextBox.Enabled = true;
             nameTextBox.Enabled = true;
@@ -399,23 +398,37 @@ namespace UdpCLientFinalForm
             removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
+
+
+
+            labelPort.Visible = false;
+            portTextBox.Visible = false;
+            portTextBox.Enabled = false;
+
+
+            labelHost.Visible = false;
+            hostTextBox.Enabled = false;
+            hostTextBox.Visible = false;
+
+            publishButton.Checked = true;
+
+            updateButton.Enabled = false;
+            updateButton.Visible = false;
         }
 
         private void SubmitReceived()
         {
-            //if (updateButton.Checked)
-            //{
-            //    richLogBox.Text += String.Format("Update for {0} changed ip address to {1}:{2}",
-            //    nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
-            //    customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
-            //    customClient.UdpClient.Connect(serverIpTest);
-            //}
-            //else
-            //{
-            richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
-            //}
-            
-        }
+            if (updateButton.Checked)
+            {
+                richLogBox.Text += String.Format("Update for {0} changed ip address to: ",
+                nameClientBox.Text) + Environment.NewLine;
+            }
+            else
+            {
+                richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
+            }
+
+    }
 
         private void DenySubmitReceived()
         {
@@ -425,11 +438,11 @@ namespace UdpCLientFinalForm
         private void UpdatedListReceived()
         {
             customClient.ClientSubjects.Clear();
-            customClient.ClientSubjects = tempUserList;
+            customClient.ClientSubjects = messageArr[3].Split("@").ToList();
             string combinedList = "[ " + string.Join(", ", customClient.ClientSubjects.ToArray()) + " ]";
 
             richLogBox.Text += String.Format("subject list for {0} updated to:\n {1}",
-                subjectTextBox.Text, combinedList) + Environment.NewLine;
+                customClient.ClientName, combinedList) + Environment.NewLine;
         }
 
         private void DenyUpdatedListReceived()
@@ -437,7 +450,7 @@ namespace UdpCLientFinalForm
             string combinedList = "[ " + string.Join(", ", customClient.ClientSubjects.ToArray()) + " ]";
 
             richLogBox.Text += String.Format("subject list for {0} denied :\n {1}",
-                subjectTextBox.Text, combinedList) + Environment.NewLine;
+                customClient.ClientName, combinedList) + Environment.NewLine;
         }
 
 
@@ -445,6 +458,7 @@ namespace UdpCLientFinalForm
         private void ChangeServerReceived()
         {
             richLogBox.Text += String.Format("Serving a different Server") + Environment.NewLine;
+            servingServer = serverA;
         }
 
 
@@ -471,47 +485,5 @@ namespace UdpCLientFinalForm
             if (ControlInvokeRequired(textbox, () => UpdateRichTextBoxText(textbox, text))) return;
                 textbox.Text = text;
         }
-        public void UpdateRichTextBoxEnable(RichTextBox textbox, bool value)
-        {
-            //Check if invoke requied if so return - as i will be recalled in correct thread
-            if (ControlInvokeRequired(textbox, () => UpdateRichTextBoxEnable(textbox, value))) return;
-            textbox.Enabled = value;
-        }
-
-        public void UpdateTextBoxText(TextBox textbox, String text)
-        {
-            //Check if invoke requied if so return - as i will be recalled in correct thread
-            if (ControlInvokeRequired(textbox, () => UpdateTextBoxText(textbox, text))) return;
-            textbox.Text = text;
-        }
-        public void UpdateTextBoxEnable(TextBox textbox, bool value)
-        {
-            //Check if invoke requied if so return - as i will be recalled in correct thread
-            if (ControlInvokeRequired(textbox, () => UpdateTextBoxEnable(textbox, value))) return;
-            textbox.Enabled = value;
-        }
-
-        //public void UpdateGroupBoxText(GroupBox groupBox, String text)
-        //{
-        //    //Check if invoke requied if so return - as i will be recalled in correct thread
-        //    if (ControlInvokeRequired(groupBox, () => UpdateGroupBoxText(groupBox, text))) return;
-        //    groupBox.Text = text;
-        //}
-        public void UpdateGroupBoxEnable(GroupBox groupBox, bool value)
-        {
-            //Check if invoke requied if so return - as i will be recalled in correct thread
-            if (ControlInvokeRequired(groupBox, () => UpdateGroupBoxEnable(groupBox, value))) return;
-            groupBox.Enabled = value;
-        }
-
-        //Or any control
-        public void UpdateButtonEnable(Button button,bool value)
-        {
-        //Check if invoke requied if so return - as i will be recalled in correct thread
-        if (ControlInvokeRequired(button, () => UpdateButtonEnable(button, value))) return;
-            button.Enabled = value;
-        }
-
-
     }
 }
