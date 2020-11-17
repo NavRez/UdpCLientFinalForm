@@ -34,13 +34,9 @@ namespace UdpCLientFinalForm
             this.removeButton = new System.Windows.Forms.Button();
             this.labelRegisterResults = new System.Windows.Forms.Label();
             this.registeredUsersBox = new System.Windows.Forms.RichTextBox();
-            this.defaultButton = new System.Windows.Forms.Button();
+            this.updateButton = new System.Windows.Forms.Button();
             this.createButton = new System.Windows.Forms.Button();
-            this.labelPort = new System.Windows.Forms.Label();
-            this.labelHost = new System.Windows.Forms.Label();
-            this.portTextBox = new System.Windows.Forms.TextBox();
-            this.hostTextBox = new System.Windows.Forms.TextBox();
-            this.labelName = new System.Windows.Forms.Label();
+            this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.richLogBox = new System.Windows.Forms.RichTextBox();
             this.clientOperationBox = new System.Windows.Forms.GroupBox();
@@ -49,14 +45,7 @@ namespace UdpCLientFinalForm
             this.subjectLabel = new System.Windows.Forms.Label();
             this.messageLabel = new System.Windows.Forms.Label();
             this.richMessageBox = new System.Windows.Forms.RichTextBox();
-            this.newPortClient = new System.Windows.Forms.Label();
-            this.newHostClient = new System.Windows.Forms.Label();
-            this.nameClient = new System.Windows.Forms.Label();
             this.publishButton = new System.Windows.Forms.RadioButton();
-            this.updateButton = new System.Windows.Forms.RadioButton();
-            this.portClientBox = new System.Windows.Forms.TextBox();
-            this.hostClientBox = new System.Windows.Forms.TextBox();
-            this.nameClientBox = new System.Windows.Forms.TextBox();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
             this.subjectTextBox = new System.Windows.Forms.TextBox();
             this.submitSubjectsButton = new System.Windows.Forms.Button();
@@ -92,13 +81,9 @@ namespace UdpCLientFinalForm
             this.registerGroup.Controls.Add(this.removeButton);
             this.registerGroup.Controls.Add(this.labelRegisterResults);
             this.registerGroup.Controls.Add(this.registeredUsersBox);
-            this.registerGroup.Controls.Add(this.defaultButton);
+            this.registerGroup.Controls.Add(this.updateButton);
             this.registerGroup.Controls.Add(this.createButton);
-            this.registerGroup.Controls.Add(this.labelPort);
-            this.registerGroup.Controls.Add(this.labelHost);
-            this.registerGroup.Controls.Add(this.portTextBox);
-            this.registerGroup.Controls.Add(this.hostTextBox);
-            this.registerGroup.Controls.Add(this.labelName);
+            this.registerGroup.Controls.Add(this.nameLabel);
             this.registerGroup.Controls.Add(this.nameTextBox);
             this.registerGroup.Location = new System.Drawing.Point(12, 12);
             this.registerGroup.Name = "registerGroup";
@@ -136,13 +121,13 @@ namespace UdpCLientFinalForm
             // 
             // defaultButton
             // 
-            this.defaultButton.Location = new System.Drawing.Point(279, 234);
-            this.defaultButton.Name = "defaultButton";
-            this.defaultButton.Size = new System.Drawing.Size(94, 29);
-            this.defaultButton.TabIndex = 7;
-            this.defaultButton.Text = "Default";
-            this.defaultButton.UseVisualStyleBackColor = true;
-            this.defaultButton.Click += new System.EventHandler(this.defaultButton_Click);
+            this.updateButton.Location = new System.Drawing.Point(279, 234);
+            this.updateButton.Name = "defaultButton";
+            this.updateButton.Size = new System.Drawing.Size(94, 29);
+            this.updateButton.TabIndex = 7;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // createButton
             // 
@@ -154,50 +139,14 @@ namespace UdpCLientFinalForm
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
-            // labelPort
-            // 
-            this.labelPort.AutoSize = true;
-            this.labelPort.Location = new System.Drawing.Point(299, 28);
-            this.labelPort.Name = "labelPort";
-            this.labelPort.Size = new System.Drawing.Size(35, 20);
-            this.labelPort.TabIndex = 5;
-            this.labelPort.Text = "Port";
-            // 
-            // labelHost
-            // 
-            this.labelHost.AutoSize = true;
-            this.labelHost.Location = new System.Drawing.Point(163, 28);
-            this.labelHost.Name = "labelHost";
-            this.labelHost.Size = new System.Drawing.Size(40, 20);
-            this.labelHost.TabIndex = 4;
-            this.labelHost.Text = "Host";
-            // 
-            // portTextBox
-            // 
-            this.portTextBox.Location = new System.Drawing.Point(279, 51);
-            this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(89, 27);
-            this.portTextBox.TabIndex = 3;
-            this.portTextBox.Text = "1111";
-            this.portTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // hostTextBox
-            // 
-            this.hostTextBox.Location = new System.Drawing.Point(142, 51);
-            this.hostTextBox.Name = "hostTextBox";
-            this.hostTextBox.Size = new System.Drawing.Size(86, 27);
-            this.hostTextBox.TabIndex = 2;
-            this.hostTextBox.Text = "127.0.0.1";
-            this.hostTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // labelName
             // 
-            this.labelName.AutoSize = true;
-            this.labelName.Location = new System.Drawing.Point(24, 28);
-            this.labelName.Name = "labelName";
-            this.labelName.Size = new System.Drawing.Size(49, 20);
-            this.labelName.TabIndex = 1;
-            this.labelName.Text = "Name";
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Location = new System.Drawing.Point(24, 28);
+            this.nameLabel.Name = "labelName";
+            this.nameLabel.Size = new System.Drawing.Size(49, 20);
+            this.nameLabel.TabIndex = 1;
+            this.nameLabel.Text = "Name";
             // 
             // nameTextBox
             // 
@@ -223,14 +172,7 @@ namespace UdpCLientFinalForm
             this.clientOperationBox.Controls.Add(this.subjectLabel);
             this.clientOperationBox.Controls.Add(this.messageLabel);
             this.clientOperationBox.Controls.Add(this.richMessageBox);
-            this.clientOperationBox.Controls.Add(this.newPortClient);
-            this.clientOperationBox.Controls.Add(this.newHostClient);
-            this.clientOperationBox.Controls.Add(this.nameClient);
             this.clientOperationBox.Controls.Add(this.publishButton);
-            this.clientOperationBox.Controls.Add(this.updateButton);
-            this.clientOperationBox.Controls.Add(this.portClientBox);
-            this.clientOperationBox.Controls.Add(this.hostClientBox);
-            this.clientOperationBox.Controls.Add(this.nameClientBox);
             this.clientOperationBox.Location = new System.Drawing.Point(13, 290);
             this.clientOperationBox.Name = "clientOperationBox";
             this.clientOperationBox.Size = new System.Drawing.Size(373, 227);
@@ -281,33 +223,6 @@ namespace UdpCLientFinalForm
             this.richMessageBox.TabIndex = 8;
             this.richMessageBox.Text = "";
             // 
-            // newPortClient
-            // 
-            this.newPortClient.AutoSize = true;
-            this.newPortClient.Location = new System.Drawing.Point(292, 68);
-            this.newPortClient.Name = "newPortClient";
-            this.newPortClient.Size = new System.Drawing.Size(66, 20);
-            this.newPortClient.TabIndex = 7;
-            this.newPortClient.Text = "new Port";
-            // 
-            // newHostClient
-            // 
-            this.newHostClient.AutoSize = true;
-            this.newHostClient.Location = new System.Drawing.Point(147, 68);
-            this.newHostClient.Name = "newHostClient";
-            this.newHostClient.Size = new System.Drawing.Size(71, 20);
-            this.newHostClient.TabIndex = 6;
-            this.newHostClient.Text = "new Host";
-            // 
-            // nameClient
-            // 
-            this.nameClient.AutoSize = true;
-            this.nameClient.Location = new System.Drawing.Point(23, 68);
-            this.nameClient.Name = "nameClient";
-            this.nameClient.Size = new System.Drawing.Size(49, 20);
-            this.nameClient.TabIndex = 5;
-            this.nameClient.Text = "Name";
-            // 
             // publishButton
             // 
             this.publishButton.AutoSize = true;
@@ -318,40 +233,9 @@ namespace UdpCLientFinalForm
             this.publishButton.TabStop = true;
             this.publishButton.Text = "Publish";
             this.publishButton.UseVisualStyleBackColor = true;
+            this.publishButton.Checked = true;
             this.publishButton.CheckedChanged += new System.EventHandler(this.publishButton_CheckedChanged);
-            // 
-            // updateButton
-            // 
-            this.updateButton.AutoSize = true;
-            this.updateButton.Location = new System.Drawing.Point(7, 27);
-            this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(79, 24);
-            this.updateButton.TabIndex = 3;
-            this.updateButton.TabStop = true;
-            this.updateButton.Text = "Update";
-            this.updateButton.UseVisualStyleBackColor = true;
-            this.updateButton.CheckedChanged += new System.EventHandler(this.updateButton_CheckedChanged);
-            // 
-            // portClientBox
-            // 
-            this.portClientBox.Location = new System.Drawing.Point(284, 91);
-            this.portClientBox.Name = "portClientBox";
-            this.portClientBox.Size = new System.Drawing.Size(83, 27);
-            this.portClientBox.TabIndex = 2;
-            // 
-            // hostClientBox
-            // 
-            this.hostClientBox.Location = new System.Drawing.Point(141, 91);
-            this.hostClientBox.Name = "hostClientBox";
-            this.hostClientBox.Size = new System.Drawing.Size(86, 27);
-            this.hostClientBox.TabIndex = 1;
-            // 
-            // nameClientBox
-            // 
-            this.nameClientBox.Location = new System.Drawing.Point(6, 91);
-            this.nameClientBox.Name = "nameClientBox";
-            this.nameClientBox.Size = new System.Drawing.Size(84, 27);
-            this.nameClientBox.TabIndex = 0;
+
             // 
             // subjectGroupBox
             // 
@@ -398,11 +282,11 @@ namespace UdpCLientFinalForm
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(32, 171);
+            this.label1.Location = new System.Drawing.Point(10, 171);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 20);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Name";
+            this.label1.Text = "Current User";
             // 
             // usCheck
             // 
@@ -549,7 +433,7 @@ namespace UdpCLientFinalForm
             this.serverHostBox2.Name = "serverHostBox2";
             this.serverHostBox2.Size = new System.Drawing.Size(86, 27);
             this.serverHostBox2.TabIndex = 2;
-            this.serverHostBox2.Text = "127.0.0.1";
+            this.serverHostBox2.Text = "192.168.2.187";
             this.serverHostBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // serverPortBox2
@@ -576,7 +460,7 @@ namespace UdpCLientFinalForm
             this.serverHostBox1.Name = "serverHostBox1";
             this.serverHostBox1.Size = new System.Drawing.Size(86, 27);
             this.serverHostBox1.TabIndex = 2;
-            this.serverHostBox1.Text = "127.0.0.1";
+            this.serverHostBox1.Text = "192.168.2.187";
             this.serverHostBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // serverPortLabel2
@@ -633,16 +517,13 @@ namespace UdpCLientFinalForm
 
         private System.Windows.Forms.GroupBox registerGroup;
         private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox hostTextBox;
-        private System.Windows.Forms.Label labelName;
+        private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label labelRegisterResults;
         private System.Windows.Forms.RichTextBox registeredUsersBox;
-        private System.Windows.Forms.Button defaultButton;
+        private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button createButton;
-        private System.Windows.Forms.Label labelPort;
-        private System.Windows.Forms.Label labelHost;
-        private System.Windows.Forms.TextBox portTextBox;
+
 
         private List<CustomClient> clients = new List<CustomClient>();
         private byte[] bus = new byte[1024];
@@ -650,14 +531,7 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.GroupBox clientOperationBox;
         private System.Windows.Forms.Label messageLabel;
         private System.Windows.Forms.RichTextBox richMessageBox;
-        private System.Windows.Forms.Label newPortClient;
-        private System.Windows.Forms.Label newHostClient;
-        private System.Windows.Forms.Label nameClient;
         private System.Windows.Forms.RadioButton publishButton;
-        private System.Windows.Forms.RadioButton updateButton;
-        private System.Windows.Forms.TextBox portClientBox;
-        private System.Windows.Forms.TextBox hostClientBox;
-        private System.Windows.Forms.TextBox nameClientBox;
         private System.Windows.Forms.TextBox subjectBox;
         private System.Windows.Forms.Label subjectLabel;
         private System.Windows.Forms.Button submitButton;
