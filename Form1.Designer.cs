@@ -178,7 +178,7 @@ namespace UdpCLientFinalForm
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(89, 27);
             this.portTextBox.TabIndex = 3;
-            this.portTextBox.Text = "8080";
+            this.portTextBox.Text = "1111";
             this.portTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // hostTextBox
@@ -594,7 +594,7 @@ namespace UdpCLientFinalForm
             this.serverPortBox1.Name = "serverPortBox1";
             this.serverPortBox1.Size = new System.Drawing.Size(89, 27);
             this.serverPortBox1.TabIndex = 3;
-            this.serverPortBox1.Text = "8080";
+            this.serverPortBox1.Text = "2222";
             this.serverPortBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // logLabel

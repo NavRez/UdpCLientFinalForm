@@ -19,7 +19,7 @@ namespace UdpCLientFinalForm
         IPEndPoint serverIpTest = null;
         CustomClient customClient = null;
         Thread SocketListenerThread = null;
-        String serverMessage = null;
+        String serverMessage = "";
         String[] messageArr;
         List<string> tempUserList = new List<string>();
         int countRQ = 0;
@@ -38,47 +38,73 @@ namespace UdpCLientFinalForm
             nameTextBox.Text = "Testing";
             portTextBox.Text = "5080";
         }
+
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
         /// <summary>
         /// Creates a new CustomClient by taking in the name, host and port specified by a User. Logs an Error message if Ip Address or name is already in use
         /// </summary>
         private void createButton_Click(object sender, EventArgs e)
         {
-            var newPort = Int32.Parse(portTextBox.Text) + 1;
-            portTextBox.Text = newPort.ToString();
+            customClient = new CustomClient(nameTextBox.Text);
+            IPEndPoint testServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 4444);
+            bus = Encoding.ASCII.GetBytes("REGISTER,0,name");
+            
 
-            try
-            {
+            SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+            SocketListenerThread.IsBackground = true;
+            SocketListenerThread.Start();
 
-                if (hostTextBox.Text.Equals(connectedHost))
-                {
-                    if (portTextBox.Text.Equals(connectedPort.ToString()))
-                    {
-                        throw new InvalidCastException("Address cannot be the same as another Server");
-                    }
-                }
+            bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1}", countRQ++, customClient.ClientName));
+            customClient.UdpClient.Send(bus, bus.Length, testServer);
+            //var newPort = Int32.Parse(portTextBox.Text) + 1;
+            //portTextBox.Text = newPort.ToString();
 
-                
-                customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
-                subjectTextBox.Text = nameTextBox.Text;
-                //clients.Add(customClient);
-                customClient.UdpClient.Connect(serverIpTest);
+            //try
+            //{
 
-                SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-                SocketListenerThread.IsBackground = true;
-                SocketListenerThread.Start();
+            //    if (hostTextBox.Text.Equals(connectedHost))
+            //    {
+            //        if (portTextBox.Text.Equals(connectedPort.ToString()))
+            //        {
+            //            throw new InvalidCastException("Address cannot be the same as another Server");
+            //        }
+            //    }
 
 
-                //TODO: Change the sent message
-                //Send a message to the server to ping connection
-                //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
-                bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1},{2},{3}", countRQ++, nameTextBox.Text, hostTextBox.Text, portTextBox.Text));
-                //bus = Encoding.ASCII.GetBytes("connect user request");
-                customClient.UdpClient.Send(bus, bus.Length);
-            }
-            catch (Exception excep)
-            {
-                richLogBox.Text += excep.Message + Environment.NewLine;
-            }
+            //    customClient = new CustomClient(nameTextBox.Text, hostTextBox.Text, Int32.Parse(portTextBox.Text));
+            //    subjectTextBox.Text = nameTextBox.Text;
+            //    //clients.Add(customClient);
+            //    customClient.UdpClient.Connect(serverIpTest);
+
+            //SocketListenerThread = new Thread(new ThreadStart(SocketListener));
+            //SocketListenerThread.IsBackground = true;
+            //SocketListenerThread.Start();
+
+
+            //    //TODO: Change the sent message
+            //    //Send a message to the server to ping connection
+            //    //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
+            //    bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1},{2},{3}", countRQ++, nameTextBox.Text, hostTextBox.Text, portTextBox.Text));
+            //    //bus = Encoding.ASCII.GetBytes("connect user request");
+            //    customClient.UdpClient.Send(bus, bus.Length);
+            //}
+            //catch (Exception excep)
+            //{
+            //    richLogBox.Text += excep.Message + Environment.NewLine;
+            //}
         }
 
 
@@ -167,6 +193,7 @@ namespace UdpCLientFinalForm
             
         }
 
+
         private void updateButton_CheckedChanged(object sender, EventArgs e)
         {
             if (updateButton.Checked)
@@ -215,8 +242,8 @@ namespace UdpCLientFinalForm
             newPortClient.Enabled = false;
             portClientBox.Enabled = false;
 
-            serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 8080);
-            connectedPort = 8080;
+            //serverIpTest = new IPEndPoint(IPAddress.Parse("127.0.0.2"), 8080);
+            //connectedPort = 8080;
             connectedHost = "127.0.0.2";
         }
 
@@ -363,7 +390,6 @@ namespace UdpCLientFinalForm
           
             richLogBox.Text += String.Format("Destroying for {0} changed ip address to {1}:{2}",
                 nameTextBox.Text, hostTextBox.Text, portTextBox.Text) + Environment.NewLine;
-            customClient.CloseConnection(serverIpTest);
 
             hostTextBox.Enabled = true;
             nameTextBox.Enabled = true;
@@ -377,17 +403,17 @@ namespace UdpCLientFinalForm
 
         private void SubmitReceived()
         {
-            if (updateButton.Checked)
-            {
-                richLogBox.Text += String.Format("Update for {0} changed ip address to {1}:{2}",
-                nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
-                customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
-                customClient.UdpClient.Connect(serverIpTest);
-            }
-            else
-            {
-                richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
-            }
+            //if (updateButton.Checked)
+            //{
+            //    richLogBox.Text += String.Format("Update for {0} changed ip address to {1}:{2}",
+            //    nameClientBox.Text, hostClientBox.Text, portClientBox.Text) + Environment.NewLine;
+            //    customClient.ChangeIP(hostClientBox.Text, Int32.Parse(portClientBox.Text));
+            //    customClient.UdpClient.Connect(serverIpTest);
+            //}
+            //else
+            //{
+            richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
+            //}
             
         }
 
@@ -414,14 +440,13 @@ namespace UdpCLientFinalForm
                 subjectTextBox.Text, combinedList) + Environment.NewLine;
         }
 
+
+
         private void ChangeServerReceived()
         {
-            connectedHost = messageArr[1];
-            connectedPort = Int32.Parse(messageArr[2]);
-            serverIpTest = new IPEndPoint(IPAddress.Parse(connectedHost), connectedPort);
-            customClient.RestartClient();
-            customClient.UdpClient.Connect(serverIpTest);
+            richLogBox.Text += String.Format("Serving a different Server") + Environment.NewLine;
         }
+
 
 
         /// <summary>
