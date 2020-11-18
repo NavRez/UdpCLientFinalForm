@@ -41,10 +41,10 @@ namespace UdpCLientFinalForm
             this.richLogBox = new System.Windows.Forms.RichTextBox();
             this.clientOperationBox = new System.Windows.Forms.GroupBox();
             this.submitButton = new System.Windows.Forms.Button();
-            this.subjectBox = new System.Windows.Forms.TextBox();
+            this.subjectMessageBox = new System.Windows.Forms.TextBox();
             this.subjectLabel = new System.Windows.Forms.Label();
             this.messageLabel = new System.Windows.Forms.Label();
-            this.richMessageBox = new System.Windows.Forms.RichTextBox();
+            this.sendingMessageBox = new System.Windows.Forms.RichTextBox();
             this.publishButton = new System.Windows.Forms.RadioButton();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
             this.currentUserNameTextbox = new System.Windows.Forms.TextBox();
@@ -169,10 +169,10 @@ namespace UdpCLientFinalForm
             // clientOperationBox
             // 
             this.clientOperationBox.Controls.Add(this.submitButton);
-            this.clientOperationBox.Controls.Add(this.subjectBox);
+            this.clientOperationBox.Controls.Add(this.subjectMessageBox);
             this.clientOperationBox.Controls.Add(this.subjectLabel);
             this.clientOperationBox.Controls.Add(this.messageLabel);
-            this.clientOperationBox.Controls.Add(this.richMessageBox);
+            this.clientOperationBox.Controls.Add(this.sendingMessageBox);
             this.clientOperationBox.Controls.Add(this.publishButton);
             this.clientOperationBox.Location = new System.Drawing.Point(13, 290);
             this.clientOperationBox.Name = "clientOperationBox";
@@ -193,10 +193,10 @@ namespace UdpCLientFinalForm
             // 
             // subjectBox
             // 
-            this.subjectBox.Location = new System.Drawing.Point(283, 150);
-            this.subjectBox.Name = "subjectBox";
-            this.subjectBox.Size = new System.Drawing.Size(84, 27);
-            this.subjectBox.TabIndex = 0;
+            this.subjectMessageBox.Location = new System.Drawing.Point(283, 150);
+            this.subjectMessageBox.Name = "subjectBox";
+            this.subjectMessageBox.Size = new System.Drawing.Size(84, 27);
+            this.subjectMessageBox.TabIndex = 0;
             // 
             // subjectLabel
             // 
@@ -218,11 +218,11 @@ namespace UdpCLientFinalForm
             // 
             // richMessageBox
             // 
-            this.richMessageBox.Location = new System.Drawing.Point(6, 150);
-            this.richMessageBox.Name = "richMessageBox";
-            this.richMessageBox.Size = new System.Drawing.Size(265, 71);
-            this.richMessageBox.TabIndex = 8;
-            this.richMessageBox.Text = "";
+            this.sendingMessageBox.Location = new System.Drawing.Point(6, 150);
+            this.sendingMessageBox.Name = "richMessageBox";
+            this.sendingMessageBox.Size = new System.Drawing.Size(265, 71);
+            this.sendingMessageBox.TabIndex = 8;
+            this.sendingMessageBox.Text = "";
             // 
             // publishButton
             // 
@@ -531,9 +531,9 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.RichTextBox richLogBox;
         private System.Windows.Forms.GroupBox clientOperationBox;
         private System.Windows.Forms.Label messageLabel;
-        private System.Windows.Forms.RichTextBox richMessageBox;
+        private System.Windows.Forms.RichTextBox sendingMessageBox;
         private System.Windows.Forms.RadioButton publishButton;
-        private System.Windows.Forms.TextBox subjectBox;
+        private System.Windows.Forms.TextBox subjectMessageBox;
         private System.Windows.Forms.Label subjectLabel;
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.GroupBox subjectGroupBox;

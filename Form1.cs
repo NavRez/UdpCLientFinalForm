@@ -17,7 +17,7 @@ namespace UdpCLientFinalForm
     public partial class Form1 : Form
     {
 
-        IPEndPoint serverIpTest = null;
+        IPEndPoint awakeServer = null;
         CustomClient customClient = null;
         Thread SocketListenerThread = null;
         String serverMessage = "";
@@ -113,14 +113,9 @@ namespace UdpCLientFinalForm
                 {
                     try
                     {
-                        //For debuging purposes: Sends a ping to the server
-                        //bus = Encoding.ASCII.GetBytes("client " + customClient.ClientName + " : Checking Connection ...");
-                        //customClient.UdpClient.Send(bus, bus.Length);
-
-                        bus = customClient.UdpClient.Receive(ref serverIpTest);
+                        bus = customClient.UdpClient.Receive(ref awakeServer);
                         bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
-                        serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                        //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
+                        serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line                       
                     }
                     catch (Exception ex)
                     {
@@ -134,7 +129,7 @@ namespace UdpCLientFinalForm
 
                     if (serverCommand.Equals("REGISTERED"))
                     {
-                        Invoke((MethodInvoker)delegate { CreateUserReceived(serverIpTest); });
+                        Invoke((MethodInvoker)delegate { CreateUserReceived(awakeServer); });
                     }
 
                     else if (serverCommand.Equals("REGISTER-DENIED"))
@@ -149,7 +144,7 @@ namespace UdpCLientFinalForm
 
                     else if(serverCommand.Equals("UPDATE-CONFIRMED"))
                     {
-                        Invoke((MethodInvoker)delegate { UpdateReceived(serverIpTest); });
+                        Invoke((MethodInvoker)delegate { UpdateReceived(awakeServer); });
                     }
 
                     else if (serverCommand.Equals("UPDATE-DENIED") || serverCommand.Equals("PUBLISH-DENIED"))
@@ -190,9 +185,9 @@ namespace UdpCLientFinalForm
             if (publishButton.Checked)
             {
                 messageLabel.Enabled = true;
-                richMessageBox.Enabled = true;
+                sendingMessageBox.Enabled = true;
                 subjectLabel.Enabled = true;
-                subjectBox.Enabled = true;
+                subjectMessageBox.Enabled = true;
 
 
                 publishButton.Checked = true;
@@ -206,9 +201,9 @@ namespace UdpCLientFinalForm
             clientOperationBox.Enabled = false;
 
             messageLabel.Enabled = false;
-            richMessageBox.Enabled = false;
+            sendingMessageBox.Enabled = false;
             subjectLabel.Enabled = false;
-            subjectBox.Enabled = false;
+            subjectMessageBox.Enabled = false;
 
             publishButton.Checked = true;
         }
@@ -216,7 +211,7 @@ namespace UdpCLientFinalForm
         private void submitButton_Click(object sender, EventArgs e)
         {         
             
-        string publishMsg = String.Format("PUBLISH,{0},{1},{2},{3}",countRQ++, customClient.ClientName , subjectBox.Text, richMessageBox.Text);
+        string publishMsg = String.Format("PUBLISH,{0},{1},{2},{3}",countRQ++, customClient.ClientName , subjectMessageBox.Text, sendingMessageBox.Text);
         bus = Encoding.ASCII.GetBytes(publishMsg);
         customClient.UdpClient.Send(bus, bus.Length, servingServer);
 
@@ -319,8 +314,8 @@ namespace UdpCLientFinalForm
             publishButton.Checked = true;
 
 
-            richMessageBox.Enabled = true;
-            subjectBox.Enabled = true;
+            sendingMessageBox.Enabled = true;
+            subjectMessageBox.Enabled = true;
 
 
         }
@@ -368,8 +363,8 @@ namespace UdpCLientFinalForm
             clientOperationBox.Enabled = true;
             publishButton.Checked = true;
 
-            richMessageBox.Enabled = true;
-            subjectBox.Enabled = true;
+            sendingMessageBox.Enabled = true;
+            subjectMessageBox.Enabled = true;
 
         }
 
@@ -400,8 +395,16 @@ namespace UdpCLientFinalForm
 
         private void ChangeServerReceived()
         {
-            richLogBox.Text += String.Format("Serving a different Server") + Environment.NewLine;
-            servingServer = serverA;
+            
+            if(servingServer == serverA)
+            {
+                servingServer = serverB;
+            }
+            else
+            {
+                servingServer = serverA;
+            }
+            richLogBox.Text += String.Format("Now communicating with server: "+ servingServer) + Environment.NewLine;
         }
 
         private void MessageReceived()
