@@ -47,7 +47,7 @@ namespace UdpCLientFinalForm
             this.richMessageBox = new System.Windows.Forms.RichTextBox();
             this.publishButton = new System.Windows.Forms.RadioButton();
             this.subjectGroupBox = new System.Windows.Forms.GroupBox();
-            this.subjectTextBox = new System.Windows.Forms.TextBox();
+            this.currentUserNameTextbox = new System.Windows.Forms.TextBox();
             this.submitSubjectsButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.usCheck = new System.Windows.Forms.CheckBox();
@@ -101,6 +101,7 @@ namespace UdpCLientFinalForm
             this.removeButton.Text = "Remove";
             this.removeButton.UseVisualStyleBackColor = true;
             this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
+            this.removeButton.Enabled = true;
             // 
             // labelRegisterResults
             // 
@@ -239,7 +240,7 @@ namespace UdpCLientFinalForm
             // 
             // subjectGroupBox
             // 
-            this.subjectGroupBox.Controls.Add(this.subjectTextBox);
+            this.subjectGroupBox.Controls.Add(this.currentUserNameTextbox);
             this.subjectGroupBox.Controls.Add(this.submitSubjectsButton);
             this.subjectGroupBox.Controls.Add(this.label1);
             this.subjectGroupBox.Controls.Add(this.usCheck);
@@ -261,13 +262,13 @@ namespace UdpCLientFinalForm
             // 
             // subjectTextBox
             // 
-            this.subjectTextBox.Location = new System.Drawing.Point(7, 192);
-            this.subjectTextBox.Name = "subjectTextBox";
-            this.subjectTextBox.ReadOnly = true;
-            this.subjectTextBox.Size = new System.Drawing.Size(95, 27);
-            this.subjectTextBox.TabIndex = 12;
-            this.subjectTextBox.Text = "Test";
-            this.subjectTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.currentUserNameTextbox.Location = new System.Drawing.Point(7, 192);
+            this.currentUserNameTextbox.Name = "subjectTextBox";
+            this.currentUserNameTextbox.ReadOnly = true;
+            this.currentUserNameTextbox.Size = new System.Drawing.Size(95, 27);
+            this.currentUserNameTextbox.TabIndex = 12;
+            this.currentUserNameTextbox.Text = "No user";
+            this.currentUserNameTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // submitSubjectsButton
             // 
@@ -559,7 +560,7 @@ namespace UdpCLientFinalForm
         private System.Windows.Forms.LinkLabel ServerLabel1;
         private System.Windows.Forms.TextBox serverHostBox2;
         private System.Windows.Forms.TextBox serverPortBox2;
-        private System.Windows.Forms.TextBox subjectTextBox;
+        private System.Windows.Forms.TextBox currentUserNameTextbox;
     }
 }
 

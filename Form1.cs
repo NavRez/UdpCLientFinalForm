@@ -35,6 +35,7 @@ namespace UdpCLientFinalForm
             InitializeComponent();
             GreyOutClientOperations();
             servingServer = serverA;
+            customClient = new CustomClient(nameTextBox.Text);
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -47,13 +48,21 @@ namespace UdpCLientFinalForm
             }
             else
             {
+                serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
+                serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
+                customClient = new CustomClient(nameTextBox.Text);
                 bus = Encoding.ASCII.GetBytes(String.Format("UPDATE,{0},{1}", countRQ++, customClient.ClientName));
+                SocketListenerThread = new Thread(new ThreadStart(SocketListener))
+                {
+                    IsBackground = true
+                };
+                SocketListenerThread.Start();
                 customClient.UdpClient.Send(bus, bus.Length, serverA);
                 customClient.UdpClient.Send(bus, bus.Length, serverB);
             }
         }
 
-
+        //Just for testing purposes, makes life easier.
         public static string GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -73,14 +82,17 @@ namespace UdpCLientFinalForm
         private void createButton_Click(object sender, EventArgs e)
         {
 
-            serverA = new IPEndPoint(IPAddress.Parse(GetLocalIPAddress()), 4444);
-            serverB = new IPEndPoint(IPAddress.Parse(GetLocalIPAddress()), 3333);
+            serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
+            serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
             customClient = new CustomClient(nameTextBox.Text);
             bus = Encoding.ASCII.GetBytes("REGISTER,0,name");
 
-            SocketListenerThread = new Thread(new ThreadStart(SocketListener));
-            SocketListenerThread.IsBackground = true;
+            SocketListenerThread = new Thread(new ThreadStart(SocketListener))
+            {
+                IsBackground = true
+            };
             SocketListenerThread.Start();
+
 
             bus = Encoding.ASCII.GetBytes(String.Format("REGISTER,{0},{1}", countRQ++, customClient.ClientName));
             customClient.UdpClient.Send(bus, bus.Length, serverA);
@@ -90,9 +102,6 @@ namespace UdpCLientFinalForm
         //Function ran on a thread to listen for server updates
         private void SocketListener() 
         {
-            
-            //int sleepVal = 2000; //2 seconds per check
-           
             while (true)
             {
                 if (customClient.UdpClient != null)
@@ -133,14 +142,14 @@ namespace UdpCLientFinalForm
                         Invoke((MethodInvoker)delegate { RemoveUserReceived(); });
                     }
 
-                    else if(serverCommand.Equals("UPDATE-CONFIRMED") || serverCommand.Equals("MESSAGE"))
+                    else if(serverCommand.Equals("UPDATE-CONFIRMED"))
                     {
-                        Invoke((MethodInvoker)delegate { SubmitReceived(); });
+                        Invoke((MethodInvoker)delegate { UpdateReceived(serverIpTest); });
                     }
 
                     else if (serverCommand.Equals("UPDATE-DENIED") || serverCommand.Equals("PUBLISH-DENIED"))
                     {
-                        Invoke((MethodInvoker)delegate { DenySubmitReceived(); });
+                        Invoke((MethodInvoker)delegate { DenyUpdateReceived(); });
                     }
 
                     else if (serverCommand.Equals("SUBJECTS-UPDATED"))
@@ -152,6 +161,12 @@ namespace UdpCLientFinalForm
                     {
                         Invoke((MethodInvoker)delegate { DenyUpdatedListReceived(); });
                     }
+
+                    else if (serverCommand.Equals("MESSAGE"))
+                    {
+                        Invoke((MethodInvoker)delegate { MessageReceived(); });
+                    }
+
                     else if (serverCommand.Equals("CHANGE-SERVER"))
                     {
                         Invoke((MethodInvoker)delegate { ChangeServerReceived(); });
@@ -181,7 +196,7 @@ namespace UdpCLientFinalForm
 
         public void GreyOutClientOperations()
         {
-            removeButton.Enabled = false;
+            removeButton.Enabled = true;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
 
@@ -274,7 +289,10 @@ namespace UdpCLientFinalForm
             //serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
             //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
             servingServer = currentip;
-            registeredUsersBox.Text = "User successfully Connected to server: " + servingServer;
+            registeredUsersBox.Text = "Registered successfully";
+            richLogBox.Text = "User: "+ customClient.ClientName +" successfully Connected to server: " + servingServer;
+
+            currentUserNameTextbox.Text = customClient.ClientName;
 
             serverHostBox1.Enabled = false;
             serverHostBox2.Enabled = false;
@@ -282,10 +300,6 @@ namespace UdpCLientFinalForm
             serverPortBox2.Enabled = false;
            
             nameTextBox.Enabled = false;
-            
-            createButton.Enabled = false;
-            updateButton.Enabled = false;
-            removeButton.Enabled = true;
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
@@ -307,27 +321,41 @@ namespace UdpCLientFinalForm
             richLogBox.Text += String.Format("Destroying for {0}", nameTextBox.Text) + Environment.NewLine;
 
 
-            nameTextBox.Enabled = true;
-
-            createButton.Enabled = true;
-            updateButton.Enabled = true;
-
-
-            removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
 
             publishButton.Checked = true;
         }
 
-        private void SubmitReceived()
+        private void UpdateReceived(IPEndPoint currentip)
         {
+            if (!messageReceived)
+            {
+                servingServer = currentip;
+                registeredUsersBox.Text = "Updated successfully";
+                richLogBox.Text = "Welcome back to the server: " + servingServer
+                    + " User: "+ customClient.ClientName;
 
-        richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
+                currentUserNameTextbox.Text = customClient.ClientName;
+                messageReceived = true;
 
+                serverHostBox1.Enabled = false;
+                serverHostBox2.Enabled = false;
+                serverPortBox1.Enabled = false;
+                serverPortBox2.Enabled = false;
+
+                nameTextBox.Enabled = false;
+
+
+                removeButton.Enabled = true;
+
+                subjectGroupBox.Enabled = true;
+                clientOperationBox.Enabled = true;
+                publishButton.Checked = true;                
+            }
         }
 
-        private void DenySubmitReceived()
+        private void DenyUpdateReceived()
         {
             richLogBox.Text += serverMessage;
         }
@@ -358,7 +386,12 @@ namespace UdpCLientFinalForm
             servingServer = serverA;
         }
 
+        private void MessageReceived()
+        {
+           
+            richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
 
+        }
 
         /// <summary>
         /// Helper method to determin if invoke required, if so will rerun method on correct thread.
