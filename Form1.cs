@@ -29,22 +29,27 @@ namespace UdpCLientFinalForm
         IPEndPoint serverB = new IPEndPoint(IPAddress.Parse(GetLocalIPAddress()), 3333);
         IPEndPoint servingServer;
 
-        bool messageReceived = false;
+        bool firstMessageReceived = false;
         public Form1()
         {
             InitializeComponent();
             GreyOutClientOperations();
-            servingServer = serverA;
             customClient = new CustomClient(nameTextBox.Text);
         }
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            if (messageReceived)
+            if (firstMessageReceived)
             {
                 customClient = new CustomClient(nameTextBox.Text);
                 bus = Encoding.ASCII.GetBytes(String.Format("UPDATE,{0},{1}", countRQ++, customClient.ClientName));
+                SocketListenerThread = new Thread(new ThreadStart(SocketListener))
+                {
+                    IsBackground = true
+                };
+                SocketListenerThread.Start();
                 customClient.UdpClient.Send(bus, bus.Length, servingServer);
+
             }
             else
             {
@@ -115,7 +120,7 @@ namespace UdpCLientFinalForm
                         bus = customClient.UdpClient.Receive(ref serverIpTest);
                         bus = bus.Where(x => x != 0x00).ToArray(); // functions inspired from https://stackoverflow.com/questions/13318561/adding-new-line-of-data-to-textbox 
                         serverMessage = Encoding.ASCII.GetString(bus).Trim();//see link on the aboce line
-                        UpdateRichTextBoxText(registeredUsersBox, serverMessage);
+                        //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
                     }
                     catch (Exception ex)
                     {
@@ -196,7 +201,7 @@ namespace UdpCLientFinalForm
 
         public void GreyOutClientOperations()
         {
-            removeButton.Enabled = true;
+            removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
 
@@ -218,10 +223,14 @@ namespace UdpCLientFinalForm
         }
 
         private void removeButton_Click(object sender, EventArgs e)
-        {      
-            string deregMsg = String.Format("DE-REGISTER,{0},{1}",countRQ++, nameTextBox.Text);
-            bus = Encoding.ASCII.GetBytes(deregMsg);
-            customClient.UdpClient.Send(bus, bus.Length, servingServer);                
+        {
+            if (firstMessageReceived)
+            {
+                string deregMsg = String.Format("DE-REGISTER,{0},{1}", countRQ++, nameTextBox.Text);
+                bus = Encoding.ASCII.GetBytes(deregMsg);
+                customClient.UdpClient.Send(bus, bus.Length, servingServer);
+            }
+             
         }
 
         private void submitSubjectsButton_Click(object sender, EventArgs e)
@@ -290,28 +299,35 @@ namespace UdpCLientFinalForm
             //UpdateRichTextBoxText(registeredUsersBox, serverMessage);
             servingServer = currentip;
             registeredUsersBox.Text = "Registered successfully";
-            richLogBox.Text = "User: "+ customClient.ClientName +" successfully Connected to server: " + servingServer;
+            richLogBox.Text += "User: "+ customClient.ClientName +
+                " successfully Connected to server: " + servingServer + Environment.NewLine;
 
             currentUserNameTextbox.Text = customClient.ClientName;
+            firstMessageReceived = true;
+
+            removeButton.Enabled = true;
 
             serverHostBox1.Enabled = false;
             serverHostBox2.Enabled = false;
             serverPortBox1.Enabled = false;
             serverPortBox2.Enabled = false;
            
-            nameTextBox.Enabled = false;
+            
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
             publishButton.Checked = true;
-            messageReceived = true;
+
+
+            richMessageBox.Enabled = true;
+            subjectBox.Enabled = true;
 
 
         }
 
         private void DenyCreateUserReceived()
         {
-            registeredUsersBox.Text += serverMessage;
+            registeredUsersBox.Text = serverMessage;
 
         }
 
@@ -320,6 +336,7 @@ namespace UdpCLientFinalForm
           
             richLogBox.Text += String.Format("Destroying for {0}", nameTextBox.Text) + Environment.NewLine;
 
+            customClient.ClientName = "";
 
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
@@ -329,30 +346,31 @@ namespace UdpCLientFinalForm
 
         private void UpdateReceived(IPEndPoint currentip)
         {
-            if (!messageReceived)
+            if (!firstMessageReceived)
             {
                 servingServer = currentip;
-                registeredUsersBox.Text = "Updated successfully";
-                richLogBox.Text = "Welcome back to the server: " + servingServer
-                    + " User: "+ customClient.ClientName;
-
-                currentUserNameTextbox.Text = customClient.ClientName;
-                messageReceived = true;
-
-                serverHostBox1.Enabled = false;
-                serverHostBox2.Enabled = false;
-                serverPortBox1.Enabled = false;
-                serverPortBox2.Enabled = false;
-
-                nameTextBox.Enabled = false;
-
-
-                removeButton.Enabled = true;
-
-                subjectGroupBox.Enabled = true;
-                clientOperationBox.Enabled = true;
-                publishButton.Checked = true;                
             }
+            
+            registeredUsersBox.Text = "Updated successfully";
+            richLogBox.Text += "Welcome back to the server: " + servingServer
+                + " User: "+ customClient.ClientName + Environment.NewLine;
+
+            removeButton.Enabled = true;
+            currentUserNameTextbox.Text = customClient.ClientName;
+            firstMessageReceived = true;
+
+            serverHostBox1.Enabled = false;
+            serverHostBox2.Enabled = false;
+            serverPortBox1.Enabled = false;
+            serverPortBox2.Enabled = false;
+
+            subjectGroupBox.Enabled = true;
+            clientOperationBox.Enabled = true;
+            publishButton.Checked = true;
+
+            richMessageBox.Enabled = true;
+            subjectBox.Enabled = true;
+
         }
 
         private void DenyUpdateReceived()
@@ -389,7 +407,7 @@ namespace UdpCLientFinalForm
         private void MessageReceived()
         {
            
-            richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}", messageArr[1], messageArr[2], messageArr[3]);
+            richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}\n", messageArr[1], messageArr[2], messageArr[3]);
 
         }
 
