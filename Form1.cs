@@ -396,7 +396,7 @@ namespace UdpCLientFinalForm
         private void ChangeServerReceived()
         {
             
-            if(servingServer == serverA)
+            if(servingServer.Equals(serverA))
             {
                 servingServer = serverB;
             }
