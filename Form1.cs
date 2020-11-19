@@ -169,15 +169,18 @@ namespace UdpCLientFinalForm
 
                     else if (serverCommand.Equals("CHANGE-SERVER"))
                     {
-                        Invoke((MethodInvoker)delegate { ChangeServerReceived(); });
+                        Invoke((MethodInvoker)delegate { ChangeServerReceived(awakeServer); });
+                    }
 
+                    else if (serverCommand.Equals("UPDATE-SERVER"))
+                    {
+                        Invoke((MethodInvoker)delegate { UpdateSleepingServer(); });
                     }
 
                     //reset the command
                     serverMessage = "";
                 }
-            }
-            
+            }           
         }
 
         private void publishButton_CheckedChanged(object sender, EventArgs e)
@@ -337,6 +340,12 @@ namespace UdpCLientFinalForm
             clientOperationBox.Enabled = false;
 
             publishButton.Checked = true;
+
+            serverHostBox1.Enabled = true;
+            serverPortBox1.Enabled = true;
+
+            serverHostBox2.Enabled = true;
+            serverPortBox2.Enabled = true;
         }
 
         private void UpdateReceived(IPEndPoint currentip)
@@ -393,25 +402,36 @@ namespace UdpCLientFinalForm
 
 
 
-        private void ChangeServerReceived()
+        private void ChangeServerReceived(IPEndPoint currentip)
         {
-            
-            if(servingServer.Equals(serverA))
-            {
-                servingServer = serverB;
-            }
-            else
-            {
-                servingServer = serverA;
-            }
+
+            servingServer = currentip;
             richLogBox.Text += String.Format("Now communicating with server: "+ servingServer) + Environment.NewLine;
         }
 
         private void MessageReceived()
-        {
-           
+        {           
             richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}\n", messageArr[1], messageArr[2], messageArr[3]);
+        }
 
+        private void UpdateSleepingServer()
+        {
+            List<string> ipandPort = messageArr[1].Split(":").ToList();
+
+            if (servingServer.Equals(serverA))
+            {
+                serverHostBox2.Text = ipandPort[0];
+                serverPortBox2.Text = ipandPort[1];
+                serverB = new IPEndPoint(IPAddress.Parse(ipandPort[0]),
+                            Int32.Parse(ipandPort[1]));
+            }
+            else 
+            {
+                serverHostBox1.Text = ipandPort[0];
+                serverPortBox1.Text = ipandPort[1];
+                serverA = new IPEndPoint(IPAddress.Parse(ipandPort[0]),
+                            Int32.Parse(ipandPort[1]));
+            }
         }
 
         /// <summary>
