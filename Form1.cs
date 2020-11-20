@@ -212,12 +212,10 @@ namespace UdpCLientFinalForm
         }
 
         private void submitButton_Click(object sender, EventArgs e)
-        {         
-            
+        {                     
         string publishMsg = String.Format("PUBLISH,{0},{1},{2},{3}",countRQ++, customClient.ClientName , subjectMessageBox.Text, sendingMessageBox.Text);
         bus = Encoding.ASCII.GetBytes(publishMsg);
         customClient.UdpClient.Send(bus, bus.Length, servingServer);
-
         }
 
         private void removeButton_Click(object sender, EventArgs e)
@@ -403,6 +401,7 @@ namespace UdpCLientFinalForm
 
 
         private void ChangeServerReceived(IPEndPoint currentip)
+        
         {
 
             servingServer = currentip;
