@@ -53,8 +53,8 @@ namespace UdpCLientFinalForm
             }
             else
             {
-                serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
-                serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
+                serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), int.Parse(serverPortBox1.Text));
+                serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), int.Parse(serverPortBox2.Text));
                 customClient = new CustomClient(nameTextBox.Text);
                 bus = Encoding.ASCII.GetBytes(String.Format("UPDATE,{0},{1}", countRQ++, customClient.ClientName));
                 SocketListenerThread = new Thread(new ThreadStart(SocketListener))
@@ -87,8 +87,8 @@ namespace UdpCLientFinalForm
         private void createButton_Click(object sender, EventArgs e)
         {
 
-            serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
-            serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
+            serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), int.Parse(serverPortBox1.Text));
+            serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), int.Parse(serverPortBox2.Text));
             customClient = new CustomClient(nameTextBox.Text);
             bus = Encoding.ASCII.GetBytes("REGISTER,0,name");
 
