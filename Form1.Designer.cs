@@ -101,7 +101,6 @@ namespace UdpCLientFinalForm
             this.removeButton.Text = "Remove";
             this.removeButton.UseVisualStyleBackColor = true;
             this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
-            this.removeButton.Enabled = true;
             // 
             // labelRegisterResults
             // 
@@ -120,10 +119,10 @@ namespace UdpCLientFinalForm
             this.registeredUsersBox.TabIndex = 8;
             this.registeredUsersBox.Text = "";
             // 
-            // defaultButton
+            // updateButton
             // 
             this.updateButton.Location = new System.Drawing.Point(279, 234);
-            this.updateButton.Name = "defaultButton";
+            this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(94, 29);
             this.updateButton.TabIndex = 7;
             this.updateButton.Text = "Update";
@@ -140,18 +139,18 @@ namespace UdpCLientFinalForm
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
             // 
-            // labelName
+            // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(24, 28);
-            this.nameLabel.Name = "labelName";
+            this.nameLabel.Location = new System.Drawing.Point(152, 46);
+            this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(49, 20);
             this.nameLabel.TabIndex = 1;
             this.nameLabel.Text = "Name";
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(7, 51);
+            this.nameTextBox.Location = new System.Drawing.Point(135, 69);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(84, 27);
             this.nameTextBox.TabIndex = 0;
@@ -191,10 +190,10 @@ namespace UdpCLientFinalForm
             this.submitButton.UseVisualStyleBackColor = true;
             this.submitButton.Click += new System.EventHandler(this.submitButton_Click);
             // 
-            // subjectBox
+            // subjectMessageBox
             // 
             this.subjectMessageBox.Location = new System.Drawing.Point(283, 150);
-            this.subjectMessageBox.Name = "subjectBox";
+            this.subjectMessageBox.Name = "subjectMessageBox";
             this.subjectMessageBox.Size = new System.Drawing.Size(84, 27);
             this.subjectMessageBox.TabIndex = 0;
             // 
@@ -210,23 +209,24 @@ namespace UdpCLientFinalForm
             // messageLabel
             // 
             this.messageLabel.AutoSize = true;
-            this.messageLabel.Location = new System.Drawing.Point(96, 127);
+            this.messageLabel.Location = new System.Drawing.Point(84, 104);
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(96, 20);
             this.messageLabel.TabIndex = 9;
             this.messageLabel.Text = "Message Box";
             // 
-            // richMessageBox
+            // sendingMessageBox
             // 
-            this.sendingMessageBox.Location = new System.Drawing.Point(6, 150);
-            this.sendingMessageBox.Name = "richMessageBox";
-            this.sendingMessageBox.Size = new System.Drawing.Size(265, 71);
+            this.sendingMessageBox.Location = new System.Drawing.Point(6, 127);
+            this.sendingMessageBox.Name = "sendingMessageBox";
+            this.sendingMessageBox.Size = new System.Drawing.Size(265, 94);
             this.sendingMessageBox.TabIndex = 8;
             this.sendingMessageBox.Text = "";
             // 
             // publishButton
             // 
             this.publishButton.AutoSize = true;
+            this.publishButton.Checked = true;
             this.publishButton.Location = new System.Drawing.Point(141, 27);
             this.publishButton.Name = "publishButton";
             this.publishButton.Size = new System.Drawing.Size(77, 24);
@@ -234,9 +234,7 @@ namespace UdpCLientFinalForm
             this.publishButton.TabStop = true;
             this.publishButton.Text = "Publish";
             this.publishButton.UseVisualStyleBackColor = true;
-            this.publishButton.Checked = true;
             this.publishButton.CheckedChanged += new System.EventHandler(this.publishButton_CheckedChanged);
-
             // 
             // subjectGroupBox
             // 
@@ -260,10 +258,10 @@ namespace UdpCLientFinalForm
             this.subjectGroupBox.TabStop = false;
             this.subjectGroupBox.Text = "Subjects";
             // 
-            // subjectTextBox
+            // currentUserNameTextbox
             // 
             this.currentUserNameTextbox.Location = new System.Drawing.Point(7, 192);
-            this.currentUserNameTextbox.Name = "subjectTextBox";
+            this.currentUserNameTextbox.Name = "currentUserNameTextbox";
             this.currentUserNameTextbox.ReadOnly = true;
             this.currentUserNameTextbox.Size = new System.Drawing.Size(95, 27);
             this.currentUserNameTextbox.TabIndex = 12;
@@ -285,7 +283,7 @@ namespace UdpCLientFinalForm
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 171);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 20);
+            this.label1.Size = new System.Drawing.Size(90, 20);
             this.label1.TabIndex = 5;
             this.label1.Text = "Current User";
             // 
@@ -432,14 +430,14 @@ namespace UdpCLientFinalForm
             // 
             this.serverHostBox2.Location = new System.Drawing.Point(116, 69);
             this.serverHostBox2.Name = "serverHostBox2";
-            this.serverHostBox2.Size = new System.Drawing.Size(86, 27);
+            this.serverHostBox2.Size = new System.Drawing.Size(106, 27);
             this.serverHostBox2.TabIndex = 2;
             this.serverHostBox2.Text = "192.168.2.187";
             this.serverHostBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // serverPortBox2
             // 
-            this.serverPortBox2.Location = new System.Drawing.Point(221, 69);
+            this.serverPortBox2.Location = new System.Drawing.Point(243, 69);
             this.serverPortBox2.Name = "serverPortBox2";
             this.serverPortBox2.Size = new System.Drawing.Size(89, 27);
             this.serverPortBox2.TabIndex = 3;
@@ -459,7 +457,7 @@ namespace UdpCLientFinalForm
             // 
             this.serverHostBox1.Location = new System.Drawing.Point(116, 36);
             this.serverHostBox1.Name = "serverHostBox1";
-            this.serverHostBox1.Size = new System.Drawing.Size(86, 27);
+            this.serverHostBox1.Size = new System.Drawing.Size(106, 27);
             this.serverHostBox1.TabIndex = 2;
             this.serverHostBox1.Text = "192.168.2.187";
             this.serverHostBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -467,7 +465,7 @@ namespace UdpCLientFinalForm
             // serverPortLabel2
             // 
             this.serverPortLabel2.AutoSize = true;
-            this.serverPortLabel2.Location = new System.Drawing.Point(241, 13);
+            this.serverPortLabel2.Location = new System.Drawing.Point(263, 13);
             this.serverPortLabel2.Name = "serverPortLabel2";
             this.serverPortLabel2.Size = new System.Drawing.Size(35, 20);
             this.serverPortLabel2.TabIndex = 5;
@@ -475,7 +473,7 @@ namespace UdpCLientFinalForm
             // 
             // serverPortBox1
             // 
-            this.serverPortBox1.Location = new System.Drawing.Point(221, 36);
+            this.serverPortBox1.Location = new System.Drawing.Point(243, 36);
             this.serverPortBox1.Name = "serverPortBox1";
             this.serverPortBox1.Size = new System.Drawing.Size(89, 27);
             this.serverPortBox1.TabIndex = 3;
