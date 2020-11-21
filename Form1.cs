@@ -172,7 +172,7 @@ namespace UdpCLientFinalForm
                         Invoke((MethodInvoker)delegate { ChangeServerReceived(awakeServer); });
                     }
 
-                    else if (serverCommand.Equals("UPDATE-SERVER"))
+                    else if (serverCommand.Equals("UPDATE-OTHER-SERVER"))
                     {
                         Invoke((MethodInvoker)delegate { UpdateSleepingServer(); });
                     }
@@ -303,12 +303,6 @@ namespace UdpCLientFinalForm
 
             removeButton.Enabled = true;
 
-            serverHostBox1.Enabled = false;
-            serverHostBox2.Enabled = false;
-            serverPortBox1.Enabled = false;
-            serverPortBox2.Enabled = false;
-           
-            
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
@@ -360,11 +354,6 @@ namespace UdpCLientFinalForm
             removeButton.Enabled = true;
             currentUserNameTextbox.Text = customClient.ClientName;
             firstMessageReceived = true;
-
-            serverHostBox1.Enabled = false;
-            serverHostBox2.Enabled = false;
-            serverPortBox1.Enabled = false;
-            serverPortBox2.Enabled = false;
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
