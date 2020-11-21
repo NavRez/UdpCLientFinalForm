@@ -199,6 +199,7 @@ namespace UdpCLientFinalForm
 
         public void GreyOutClientOperations()
         {
+            currentUserNameTextbox.Text = "";
             removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
@@ -326,6 +327,8 @@ namespace UdpCLientFinalForm
           
             richLogBox.Text += String.Format("Destroying for {0}", nameTextBox.Text) + Environment.NewLine;
 
+
+            currentUserNameTextbox.Text = "";
             customClient.ClientName = "";
 
             subjectGroupBox.Enabled = false;
