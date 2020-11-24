@@ -53,8 +53,8 @@ namespace UdpCLientFinalForm
             }
             else
             {
-                serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
-                serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
+                serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), int.Parse(serverPortBox1.Text));
+                serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), int.Parse(serverPortBox2.Text));
                 customClient = new CustomClient(nameTextBox.Text);
                 bus = Encoding.ASCII.GetBytes(String.Format("UPDATE,{0},{1}", countRQ++, customClient.ClientName));
                 SocketListenerThread = new Thread(new ThreadStart(SocketListener))
@@ -87,8 +87,8 @@ namespace UdpCLientFinalForm
         private void createButton_Click(object sender, EventArgs e)
         {
 
-            serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), 4444);
-            serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), 3333);
+            serverA = new IPEndPoint(IPAddress.Parse(serverHostBox1.Text), int.Parse(serverPortBox1.Text));
+            serverB = new IPEndPoint(IPAddress.Parse(serverHostBox2.Text), int.Parse(serverPortBox2.Text));
             customClient = new CustomClient(nameTextBox.Text);
             bus = Encoding.ASCII.GetBytes("REGISTER,0,name");
 
@@ -169,15 +169,18 @@ namespace UdpCLientFinalForm
 
                     else if (serverCommand.Equals("CHANGE-SERVER"))
                     {
-                        Invoke((MethodInvoker)delegate { ChangeServerReceived(); });
+                        Invoke((MethodInvoker)delegate { ChangeServerReceived(awakeServer); });
+                    }
 
+                    else if (serverCommand.Equals("UPDATE-OTHER-SERVER"))
+                    {
+                        Invoke((MethodInvoker)delegate { UpdateSleepingServer(); });
                     }
 
                     //reset the command
                     serverMessage = "";
                 }
-            }
-            
+            }           
         }
 
         private void publishButton_CheckedChanged(object sender, EventArgs e)
@@ -196,6 +199,7 @@ namespace UdpCLientFinalForm
 
         public void GreyOutClientOperations()
         {
+            currentUserNameTextbox.Text = "";
             removeButton.Enabled = false;
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
@@ -209,12 +213,10 @@ namespace UdpCLientFinalForm
         }
 
         private void submitButton_Click(object sender, EventArgs e)
-        {         
-            
+        {                     
         string publishMsg = String.Format("PUBLISH,{0},{1},{2},{3}",countRQ++, customClient.ClientName , subjectMessageBox.Text, sendingMessageBox.Text);
         bus = Encoding.ASCII.GetBytes(publishMsg);
         customClient.UdpClient.Send(bus, bus.Length, servingServer);
-
         }
 
         private void removeButton_Click(object sender, EventArgs e)
@@ -302,12 +304,6 @@ namespace UdpCLientFinalForm
 
             removeButton.Enabled = true;
 
-            serverHostBox1.Enabled = false;
-            serverHostBox2.Enabled = false;
-            serverPortBox1.Enabled = false;
-            serverPortBox2.Enabled = false;
-           
-            
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
@@ -331,12 +327,20 @@ namespace UdpCLientFinalForm
           
             richLogBox.Text += String.Format("Destroying for {0}", nameTextBox.Text) + Environment.NewLine;
 
+
+            currentUserNameTextbox.Text = "";
             customClient.ClientName = "";
 
             subjectGroupBox.Enabled = false;
             clientOperationBox.Enabled = false;
 
             publishButton.Checked = true;
+
+            serverHostBox1.Enabled = true;
+            serverPortBox1.Enabled = true;
+
+            serverHostBox2.Enabled = true;
+            serverPortBox2.Enabled = true;
         }
 
         private void UpdateReceived(IPEndPoint currentip)
@@ -353,11 +357,6 @@ namespace UdpCLientFinalForm
             removeButton.Enabled = true;
             currentUserNameTextbox.Text = customClient.ClientName;
             firstMessageReceived = true;
-
-            serverHostBox1.Enabled = false;
-            serverHostBox2.Enabled = false;
-            serverPortBox1.Enabled = false;
-            serverPortBox2.Enabled = false;
 
             subjectGroupBox.Enabled = true;
             clientOperationBox.Enabled = true;
@@ -393,25 +392,37 @@ namespace UdpCLientFinalForm
 
 
 
-        private void ChangeServerReceived()
+        private void ChangeServerReceived(IPEndPoint currentip)
+        
         {
-            
-            if(servingServer == serverA)
-            {
-                servingServer = serverB;
-            }
-            else
-            {
-                servingServer = serverA;
-            }
+
+            servingServer = currentip;
             richLogBox.Text += String.Format("Now communicating with server: "+ servingServer) + Environment.NewLine;
         }
 
         private void MessageReceived()
-        {
-           
+        {           
             richLogBox.Text += String.Format("Message from {0} regarding {1} : {2}\n", messageArr[1], messageArr[2], messageArr[3]);
+        }
 
+        private void UpdateSleepingServer()
+        {
+            List<string> ipandPort = messageArr[1].Split(":").ToList();
+
+            if (servingServer.Equals(serverA))
+            {
+                serverHostBox2.Text = ipandPort[0];
+                serverPortBox2.Text = ipandPort[1];
+                serverB = new IPEndPoint(IPAddress.Parse(ipandPort[0]),
+                            Int32.Parse(ipandPort[1]));
+            }
+            else 
+            {
+                serverHostBox1.Text = ipandPort[0];
+                serverPortBox1.Text = ipandPort[1];
+                serverA = new IPEndPoint(IPAddress.Parse(ipandPort[0]),
+                            Int32.Parse(ipandPort[1]));
+            }
         }
 
         /// <summary>
